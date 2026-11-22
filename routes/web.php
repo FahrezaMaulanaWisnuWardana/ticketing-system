@@ -23,6 +23,7 @@ use App\Http\Controllers\GitWebhookController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectManagementController;
 use App\Http\Controllers\ReportController;
@@ -75,9 +76,12 @@ Route::middleware('auth')->group(static function (): void {
     Route::get('/projects/{project:key}/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/projects/{project:key}/reports/export', [ReportController::class, 'export'])->name('reports.export');
 
+    Route::get('/portal/suggest', [PortalController::class, 'suggest'])->name('portal.suggest');
     Route::get('/requests', [RequesterController::class, 'index'])->name('requester.requests');
     Route::get('/requests/{ticket}', [RequesterController::class, 'show'])->name('requester.requests.show');
     Route::get('/queue', [AgentController::class, 'queue'])->name('agent.queue');
+    Route::post('/queue/bulk/assign', [AgentController::class, 'bulkAssign'])->name('agent.queue.bulk.assign');
+    Route::post('/queue/bulk/status', [AgentController::class, 'bulkStatus'])->name('agent.queue.bulk.status');
     Route::get('/search', SearchController::class)->name('search');
 
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');

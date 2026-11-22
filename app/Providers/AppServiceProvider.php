@@ -13,6 +13,7 @@ use App\Observers\TicketObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,11 @@ final class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        // "components.pagination" is reserved by the Livewire ticket list as a
+        // wire:click paginator view. Our server-side wrapper is exposed as
+        // <x-pagination> through this explicit alias instead.
+        Blade::component('components.pagination-links', 'pagination');
+
         Model::shouldBeStrict(! $this->app->isProduction());
         if ($this->app->isProduction()) {
             Model::handleLazyLoadingViolationUsing(static function (Model $model, string $relation): void {

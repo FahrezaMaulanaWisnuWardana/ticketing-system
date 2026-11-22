@@ -57,5 +57,4 @@ enum Priority: string
             self::Low => 1,
         };
     }
-
 }

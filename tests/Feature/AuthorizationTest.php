@@ -33,6 +33,39 @@ it('prevents a requester from viewing another requesters ticket', function (): v
     expect(Ticket::query()->whereKey($ticket->id)->exists())->toBeFalse();
 });
 
+it('shows only tickets reported by the requester on the my requests pages', function (): void {
+    $requester = User::factory()->create();
+    $other = User::factory()->create();
+    $project = Project::factory()->create();
+
+    Ticket::factory()->create([
+        'project_id' => $project->id,
+        'reporter_id' => $requester->id,
+        'requester_id' => $requester->id,
+        'title' => 'Ticket I reported',
+    ]);
+    $onMyBehalf = Ticket::factory()->create([
+        'project_id' => $project->id,
+        'reporter_id' => $other->id,
+        'requester_id' => $requester->id,
+        'title' => 'Ticket filed for me by someone else',
+    ]);
+
+    $this->actingAs($requester)->get(route('home'))
+        ->assertOk()
+        ->assertSee('Ticket I reported')
+        ->assertDontSee('Ticket filed for me by someone else');
+
+    $this->actingAs($requester)->get(route('requester.requests'))
+        ->assertOk()
+        ->assertSee('Ticket I reported')
+        ->assertDontSee('Ticket filed for me by someone else');
+
+    // The list narrows to reported tickets, but access to a ticket filed on
+    // the requester's behalf is unchanged in the global scope and policy.
+    $this->actingAs($requester)->get(route('tickets.show', $onMyBehalf))->assertOk();
+});
+
 it('hides internal notes and attachments from requesters', function (): void {
     $requester = User::factory()->create();
     $agent = User::factory()->agent()->create();

@@ -135,4 +135,14 @@ class User extends Authenticatable
             ->wherePivot('role', 'lead')
             ->exists();
     }
+
+    /**
+     * Whether this user may see tickets beyond the ones they reported.
+     * Used by the portal filter to offer "Semua permintaan" only when it is
+     * meaningful; the global Ticket scope remains the final authority.
+     */
+    public function hasOrganizationAccess(): bool
+    {
+        return $this->isAdmin() || $this->isAgent();
+    }
 }

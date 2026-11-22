@@ -81,6 +81,20 @@ enum TicketStatus: string
         return $values;
     }
 
+    /**
+     * The single presentation category for this status. Every badge in the UI
+     * reads its label, icon and colour from this category.
+     */
+    public function category(): StatusCategory
+    {
+        return match ($this) {
+            self::New, self::Backlog, self::Todo => StatusCategory::Todo,
+            self::InProgress, self::InReview => StatusCategory::InProgress,
+            self::WaitingRequester => StatusCategory::Waiting,
+            self::Done, self::Closed => StatusCategory::Done,
+        };
+    }
+
     public function labelKey(): string
     {
         return 'status.'.$this->group()->value;
@@ -135,6 +149,15 @@ enum TicketStatus: string
             self::WaitingRequester => '#f97316',
             self::Done, self::Closed => '#10b981',
         };
+    }
+
+    /** @return array<int, string> */
+    public static function finalValues(): array
+    {
+        return array_values(array_map(
+            static fn (self $case): string => $case->value,
+            array_filter(self::cases(), static fn (self $case): bool => $case->isFinal()),
+        ));
     }
 
     public function isFinal(): bool

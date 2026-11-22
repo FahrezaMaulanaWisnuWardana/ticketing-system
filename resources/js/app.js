@@ -29,6 +29,52 @@ document.addEventListener('alpine:init', () => {
         window.addEventListener('keydown', handler);
         cleanup(() => window.removeEventListener('keydown', handler));
     });
+
+    // Portal home: debounced live search over request types and help articles.
+    // The debounce itself is applied in the template with x-on:input.debounce.300ms.
+    window.Alpine.data('portalSearch', (endpoint) => ({
+        query: '',
+        results: null,
+        loading: false,
+        open: false,
+        controller: null,
+
+        async run() {
+            const value = this.query.trim();
+            if (value === '') {
+                this.clear();
+                return;
+            }
+
+            this.open = true;
+            this.loading = true;
+            if (this.controller) this.controller.abort();
+            this.controller = new AbortController();
+
+            try {
+                const response = await fetch(endpoint + '?q=' + encodeURIComponent(value), {
+                    signal: this.controller.signal,
+                    headers: { Accept: 'application/json' },
+                });
+                if (!response.ok) throw new Error('suggest failed');
+                this.results = await response.json();
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    this.results = { types: [], articles: [] };
+                }
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        clear() {
+            this.query = '';
+            this.results = null;
+            this.loading = false;
+            this.open = false;
+            if (this.controller) this.controller.abort();
+        },
+    }));
 });
 
 if (document.querySelector('meta[name="echo-enabled"]')?.content === 'true') {

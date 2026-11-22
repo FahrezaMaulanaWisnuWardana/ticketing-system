@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\Priority;
+use App\Enums\StatusCategory;
 use App\Enums\TicketKind;
 use App\Enums\TicketStatus;
 use App\Support\Scopes\VisibleToUserScope;
@@ -119,6 +120,28 @@ class Ticket extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Request type is the user-facing alias of the existing category relation.
+     * The portal catalogue (config/request-types.php) is keyed by tickets.type;
+     * this relation covers tickets that still carry a legacy category.
+     *
+     * @return BelongsTo<Category, $this>
+     */
+    public function requestType(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    /**
+     * A ticket that is waiting on the reporter/requester needs their reply.
+     * This is an indicator next to the title, never a separate status.
+     */
+    public function needsReplyFor(User $user): bool
+    {
+        return $this->status->category() === StatusCategory::Waiting
+            && ($this->reporter_id === $user->id || $this->requester_id === $user->id);
     }
 
     /** @return BelongsTo<User, $this> */

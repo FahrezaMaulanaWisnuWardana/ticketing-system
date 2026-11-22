@@ -9,6 +9,7 @@ use App\Enums\ProjectTemplate;
 use App\Enums\Role;
 use App\Enums\TicketKind;
 use App\Enums\TicketStatus;
+use App\Support\RequestTypeCatalog;
 use Illuminate\Validation\Rule;
 
 final class Rules
@@ -23,7 +24,7 @@ final class Rules
             'title' => ['required', 'string', 'max:200'],
             'description' => ['nullable', 'string', 'max:20000'],
             'priority' => ['nullable', 'string', Rule::enum(Priority::class)],
-            'type' => ['nullable', 'string', 'max:32'],
+            'type' => ['nullable', 'string', 'max:32', Rule::in([...array_keys(RequestTypeCatalog::all()), 'task'])],
             'severity' => ['nullable', 'string', 'max:16'],
             'environment' => ['nullable', 'string', 'max:64'],
             'requester_id' => ['nullable', 'integer', 'exists:users,id'],

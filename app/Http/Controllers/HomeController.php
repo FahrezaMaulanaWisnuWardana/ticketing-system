@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Support\RequestTypeCatalog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,15 +18,20 @@ final class HomeController extends Controller
             return view('welcome');
         }
 
-        $tickets = Ticket::query()
-            ->with('project', 'assignee', 'requester', 'reporter:id,name')
-            ->when($user->isRequester(), static fn ($query) => $query->where(static fn ($inner) => $inner
-                ->where('requester_id', $user->id)
-                ->orWhere('reporter_id', $user->id)))
+        // Small "recent requests" block only — the portal home deliberately
+        // has no ticket table. The full list lives at /requests.
+        $recent = Ticket::query()
+            ->with(['project:id,key,name', 'reporter:id,name', 'assignee:id,name', 'requestType:id,name,kind'])
+            ->when($user->isRequester(), static fn ($query) => $query->where('reporter_id', $user->id))
             ->when($user->isAgent(), static fn ($query) => $query->where('assignee_id', $user->id))
-            ->orderByRaw('rank asc')
-            ->paginate(20);
+            ->latest()
+            ->limit(5)
+            ->get();
 
-        return view('home', ['tickets' => $tickets]);
+        return view('home', [
+            'groupedTypes' => RequestTypeCatalog::grouped(),
+            'groupLabels' => RequestTypeCatalog::groups(),
+            'recent' => $recent,
+        ]);
     }
 }

@@ -17,6 +17,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\AuditService;
+use App\Support\RequestTypeCatalog;
 use App\Support\SlaTargets;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -32,12 +33,18 @@ final class TicketController
         return view('tickets.index');
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         Gate::authorize('create', Ticket::class);
         $projects = Project::visible()->with('categories')->get();
+        $requestedType = trim((string) $request->query('type', ''));
+        $type = RequestTypeCatalog::isValid($requestedType) ? $requestedType : null;
 
-        return view('tickets.create', ['projects' => $projects]);
+        return view('tickets.create', [
+            'projects' => $projects,
+            'type' => $type,
+            'typeLabel' => $type !== null ? RequestTypeCatalog::label($type) : null,
+        ]);
     }
 
     public function store(StoreTicketRequest $request, CreateTicket $create, AttachPending $attach): RedirectResponse

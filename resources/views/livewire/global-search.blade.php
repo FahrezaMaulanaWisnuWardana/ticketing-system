@@ -14,7 +14,7 @@
                         <tr class="border-t border-slate-100 dark:border-slate-800">
                             <td><a class="font-medium text-brand-700 dark:text-brand-300 hover:underline" href="{{ route('tickets.show', $ticket) }}"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</a></td>
                             <td>{{ $ticket->project?->key }}</td>
-                            <td><x-status-badge :status="$ticket->status" :requester="auth()->user()->isRequester()" /></td>
+                            <td><x-status-badge :status="$ticket->status" /></td>
                         </tr>
                     @endforeach</tbody>
                 </table>

@@ -284,11 +284,13 @@
       <div class="mock-window">
         <div class="mock-top"><i></i><i></i><i></i><span>ticketing / beranda</span></div>
         <div class="mock-body">
-          <div class="mock-head"><span class="mock-title">Pekerjaan saya</span><span class="mock-btn">+ Buat</span></div>
-          <div class="mock-row"><b>IT-1 — Perbaikan printer lantai 2</b><span>IT</span><span class="pill p-new">Baru</span></div>
-          <div class="mock-row"><b>APP-3 — Timeout saat unggah file</b><span>APP</span><span class="pill p-prog">Dikerjakan</span></div>
-          <div class="mock-row"><b>IT-4 — Permintaan akses VPN</b><span>IT</span><span class="pill p-wait">Menunggu</span></div>
-          <div class="mock-row"><b>APP-8 — Perbarui dependensi</b><span>APP</span><span class="pill p-done">Selesai</span></div>
+          <div class="mock-head"><span class="mock-title">Apa yang bisa kami bantu?</span><span class="mock-btn">+ Buat</span></div>
+          <div class="fake-input" style="margin:10px 14px">Apa yang bisa kami bantu?</div>
+          <div class="mock-row" style="font-size:11px;color:var(--muted)"><b>IT</b><span>Jenis permintaan</span></div>
+          <div class="mock-row"><b>Gangguan IT</b><span class="pill p-new">IT</span></div>
+          <div class="mock-row"><b>Akses &amp; akun</b><span class="pill p-new">IT</span></div>
+          <div class="mock-row" style="font-size:11px;color:var(--muted)"><b>APLIKASI</b><span>Jenis permintaan</span></div>
+          <div class="mock-row"><b>Masalah aplikasi</b><span class="pill p-prog">APP</span></div>
         </div>
       </div>
       <div class="float-card f1"><span class="ic" style="background:#dcfce7;color:#15803d">✓</span><span><b>Tiket selesai</b><small>Selesai otomatis via Git</small></span></div>
@@ -302,7 +304,7 @@
   <div class="wrap">
     <div class="stat"><b>4</b><span>peran pengguna</span></div>
     <div class="stat"><b>2</b><span>alur kerja utama</span></div>
-    <div class="stat"><b>8</b><span>status tiket</span></div>
+    <div class="stat"><b>4</b><span>kategori status</span></div>
     <div class="stat"><b>5</b><span>pintasan keyboard</span></div>
   </div>
 </div>
@@ -317,14 +319,20 @@
     </div>
     <div class="flow">
       <div class="step s1"><div class="num">1</div><h3>Masuk</h3><p>Email + kata sandi, Google, atau tautan undangan. Admin wajib memakai 2FA.</p></div>
-      <div class="step s2"><div class="num">2</div><h3>Buat tiket</h3><p>Tombol <b>+ Buat</b> atau tekan <kbd>C</kbd>. Pilih proyek, jenis, judul, dan deskripsi.</p></div>
+      <div class="step s2"><div class="num">2</div><h3>Buat permintaan</h3><p>Di <b>Beranda</b>, pilih kartu jenis permintaan — atau tombol <b>+ Buat permintaan</b>. Formulir otomatis terisi jenis dan proyeknya; tinggal isi judul serta deskripsi.</p></div>
       <div class="step s3"><div class="num">3</div><h3>Diproses tim</h3><p>Agen mengambil tiket dari antrean, membalas, dan mengubah statusnya.</p></div>
       <div class="step s4"><div class="num">4</div><h3>Selesai</h3><p>Peminta mendapat notifikasi, bisa membalas, atau membuka ulang hingga 7 hari.</p></div>
     </div>
-    <figure class="frame crop" style="margin:28px 0 0">
-      <div class="frame-bar"><i></i><i></i><i></i><span>beranda · pekerjaan saya</span></div>
-      <img src="screenshots/01-dashboard.png" alt="Tampilan beranda Ticketing System dengan tabel Pekerjaan saya berisi daftar tiket, status, penanggung jawab, dan waktu pembuatan">
-      <figcaption style="padding:11px 14px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)">Beranda menampilkan <b>Pekerjaan saya</b> — tiket yang ditugaskan kepada Anda, diurutkan dengan yang mendesak di atas.</figcaption>
+    <figure class="frame" style="margin:28px 0 0">
+      <div class="frame-bar"><i></i><i></i><i></i><span>beranda · portal layanan</span></div>
+      <div class="mock-body">
+        <div class="mock-head"><span class="mock-title">Apa yang bisa kami bantu?</span><span class="mock-btn">+ Buat permintaan</span></div>
+        <div class="fake-input" style="margin:10px 14px">Cari panduan atau jenis permintaan…</div>
+        <div class="mock-row"><b>Gangguan komputer &amp; jaringan</b><span class="pill p-new">IT</span></div>
+        <div class="mock-row"><b>Akses &amp; akun</b><span class="pill p-new">IT</span></div>
+        <div class="mock-row"><b>Masalah aplikasi</b><span class="pill p-prog">APP</span></div>
+      </div>
+      <figcaption style="padding:11px 14px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)"><b>Beranda</b> tidak berisi tabel. Cari bantuan lewat kolom pencarian, lalu pilih kartu jenis permintaan untuk langsung membuka formulir.</figcaption>
     </figure>
   </div>
 </section>
@@ -344,7 +352,7 @@
       </div>
       <div class="role" style="--rc:#7c3aed;--rb:#ede9fe">
         <div class="ric">🎧</div><div class="who">Agen</div><h3>Penangani tiket</h3>
-        <ul><li>Melihat <b>Pekerjaan saya</b></li><li>Mengambil tiket dari antrean</li><li>Balas publik / catatan internal</li><li>Mengubah status & prioritas</li></ul>
+        <ul><li>Melihat <b>Antrean</b> beserta jumlah tiketnya</li><li>Mengambil tiket secara massal</li><li>Balas publik / catatan internal</li><li>Mengubah status & prioritas</li></ul>
       </div>
       <div class="role" style="--rc:#e11d48;--rb:#ffe4e6">
         <div class="ric">📋</div><div class="who">Project Lead</div><h3>Pengelola proyek</h3>
@@ -399,23 +407,23 @@
     </div>
 
     <!-- 02 CREATE -->
-    <div class="guide">
+    <div class="guide" id="membuat-permintaan">
       <div class="guide-copy">
         <div class="badge-n">02</div>
-        <h3>Membuat tiket baru</h3>
-        <p>Cara tercepat: klik <b>+ Buat</b> di kanan atas, atau tekan <kbd>C</kbd> dari keyboard mana pun.</p>
+        <h3>Membuat permintaan baru</h3>
+        <p>Cara tercepat: pilih kartu jenis permintaan di <b>Beranda</b>. Anda juga bisa menekan <b>+ Buat permintaan</b> di kanan atas atau <kbd>C</kbd> untuk membuka pemilih jenis.</p>
         <ol class="todo">
-          <li><span class="n">1</span>Pilih <b>Proyek</b> tujuan (mis. IT atau APP).</li>
-          <li><span class="n">2</span>Pilih <b>Jenis tiket</b>: <i>request</i> untuk permintaan helpdesk, atau <i>dev</i> untuk pekerjaan pengembangan.</li>
+          <li><span class="n">1</span>Pilih <b>jenis permintaan</b> yang paling sesuai, misalnya <i>Gangguan komputer &amp; jaringan</i>, <i>Akses &amp; akun</i>, atau <i>Masalah aplikasi</i>.</li>
+          <li><span class="n">2</span>Pada formulir, pilih <b>proyek</b> dan <b>kategori</b> yang sesuai (misalnya IT atau APP). Pilihan jenis permintaan sudah tercantun di bagian atas.</li>
           <li><span class="n">3</span>Isi <b>Judul</b> yang singkat dan jelas, lalu tulis <b>Deskripsi</b> memakai tombol format (tebal, daftar, kode, tautan). Gambar dan berkas bisa ditempel atau diseret langsung ke area deskripsi.</li>
-          <li><span class="n">4</span>Klik <b>Buat</b>. Anda akan dibawa ke halaman konfirmasi yang menampilkan nomor tiket dan target SLA.</li>
+          <li><span class="n">4</span>Klik <b>Kirim</b>. Anda akan dibawa ke halaman konfirmasi yang menampilkan nomor tiket dan target SLA.</li>
         </ol>
         <div class="note"><b>Tips:</b> Untuk tiket penuh (prioritas, lampiran, tenggat), buka menu <b>Tiket → Buat tiket</b> dan gunakan formulir lengkap. Dialog cepat bisa ditutup dengan <kbd>Esc</kbd> atau tombol <b>Batal</b>; setelah tiket dibuat Anda otomatis dibawa ke halaman konfirmasi.</div>
       </div>
       <figure class="frame" style="margin:0">
-        <div class="frame-bar"><i></i><i></i><i></i><span>modal “Permintaan baru”</span></div>
-        <img src="screenshots/02-create-modal.png" alt="Tampilan modal pembuatan tiket baru dengan pilihan proyek, jenis tiket, judul, dan deskripsi">
-        <figcaption style="padding:11px 14px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)">Tampilan asli dialog <b>Permintaan baru</b> — cukup empat kolom.</figcaption>
+        <div class="frame-bar"><i></i><i></i><i></i><span>formulir “Permintaan baru”</span></div>
+        <img src="screenshots/02-create-modal.png" alt="Tampilan formulir pembuatan permintaan baru dengan pilihan proyek, kategori, judul, deskripsi, dan lampiran">
+        <figcaption style="padding:11px 14px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)">Tampilan asli formulir <b>Permintaan baru</b> — proyek, kategori, judul, deskripsi, dan lampiran.</figcaption>
       </figure>
     </div>
 
@@ -423,15 +431,15 @@
     <div class="guide">
       <div class="guide-copy">
         <div class="badge-n">03</div>
-        <h3>Memantau tiket</h3>
-        <p>Semua tiket berkumpul di halaman <b>Tiket</b> (agen/lead) atau <b>Permintaan saya</b> (peminta).</p>
+        <h3>Memantau permintaan</h3>
+        <p>Semua permintaan Anda ada di halaman <b>Permintaan saya</b>. Secara bawaan hanya <b>permintaan terbuka</b> yang ditampilkan — yang sudah selesai tidak ikut tercampur.</p>
         <ol class="todo">
-          <li><span class="n">1</span>Gunakan kolom <b>Cari</b> untuk mencari berdasarkan nomor, judul, atau kata kunci.</li>
-          <li><span class="n">2</span>Gunakan <b>filter status</b> untuk menyaring: semua, terbuka, atau selesai.</li>
-          <li><span class="n">3</span>Klik nomor tiket untuk membuka percakapan, riwayat aktivitas, dan lampiran.</li>
-          <li><span class="n">4</span>Jika status <b>Menunggu</b>, segera balas — pekerjaan otomatis dilanjutkan.</li>
+          <li><span class="n">1</span>Gunakan <b>Cari dalam daftar</b> untuk mencari berdasarkan judul atau nomor referensi (mis. <i>IT-12</i>).</li>
+          <li><span class="n">2</span>Saring dengan <b>Status</b> (terbuka / selesai / semua), <b>Jenis permintaan</b>, dan — jika Anda memiliki akses organisasi — <b>Dibuat oleh</b>.</li>
+          <li><span class="n">3</span>Klik judul <b>Ringkasan</b>, <b>Status</b>, atau <b>Dibuat</b> untuk mengubah urutan. Secara bawaan yang terbaru tampil pertama.</li>
+          <li><span class="n">4</span>Jika ada badge <b>Perlu balasan Anda</b>, segera balas — permintaan ini otomatis tampil paling atas.</li>
         </ol>
-        <div class="note"><b>Tips:</b> Tekan <kbd>/</kbd> untuk langsung berpindah ke kolom pencarian.</div>
+        <div class="note"><b>Tips:</b> Tekan <kbd>/</kbd> untuk berpindah ke pencarian global di header. Kolom <b>Pemohon</b> menunjukkan orang yang diajak bicara, bukan Anda sebagai pelapor.</div>
       </div>
       <figure class="frame crop" style="margin:0">
         <div class="frame-bar"><i></i><i></i><i></i><span>daftar tiket</span></div>
@@ -445,25 +453,25 @@
       <div class="guide-copy">
         <div class="badge-n">04</div>
         <h3>Antrean & penugasan (agen)</h3>
-        <p><b>Antrean helpdesk</b> menampilkan permintaan belum ditugaskan, diurutkan berdasarkan prioritas lalu yang terlama.</p>
+        <p>Menu <b>Antrean</b> hanya muncul untuk agen. Ada lima antrean dengan angka jumlah tiket: <b>Semua terbuka</b>, <b>Ditugaskan ke saya</b>, <b>Belum ditugaskan</b>, <b>Baru dibuat</b>, dan <b>Baru diselesaikan</b>.</p>
         <ol class="todo">
-          <li><span class="n">1</span>Pilih tiket dari antrean, lalu tekan <kbd>A</kbd> untuk mengambilnya sendiri.</li>
-          <li><span class="n">2</span>Buka percakapan, pilih <b>balasan siap pakai</b> atau tulis balasan sendiri.</li>
-          <li><span class="n">3</span>Gunakan <b>catatan internal</b> (latar kuning) untuk diskusi tim — tidak pernah dikirim ke peminta.</li>
-          <li><span class="n">4</span>Tekan <kbd>S</kbd> untuk mengubah status tiket.</li>
+          <li><span class="n">1</span>Pilih antrean, lalu centang tiket yang ingin diproses. Kotak di header memilih semua tiket pada halaman.</li>
+          <li><span class="n">2</span>Gunakan aksi massal di bawah tabel untuk <b>Tetapkan ke saya</b> atau <b>Ubah status</b> beberapa tiket sekaligus.</li>
+          <li><span class="n">3</span>Perhatikan kolom <b>Prioritas</b> dan <b>Waktu penyelesaian</b>: merah berarti SLA terlewat, kuning berarti hampir terlewat.</li>
+          <li><span class="n">4</span>Buka tiket untuk membalas, memakai <b>balasan siap pakai</b>, atau menulis <b>catatan internal</b> yang tidak dikirim ke peminta.</li>
         </ol>
         <div class="note"><b>Tips:</b> Ketik <b>@email.rekan</b> di kolom komentar untuk menyebut rekan; mereka akan mendapat notifikasi.</div>
       </div>
       <figure class="frame" style="margin:0">
         <div class="frame-bar"><i></i><i></i><i></i><span>antrean helpdesk</span></div>
         <div class="queue-mock">
-          <div class="qm-head"><b>Antrean helpdesk</b><span>diurutkan: prioritas → terlama</span></div>
-          <div class="qrow head"><span>Judul</span><span>Proyek</span><span>Prioritas</span><span>Aksi</span></div>
-          <div class="qrow"><b>APP-12 — Gagal unggah lampiran</b><span>APP</span><span class="urg mendesak">Mendesak</span><span><kbd>A</kbd> ambil</span></div>
-          <div class="qrow"><b>IT-21 — Akun tidak bisa login</b><span>IT</span><span class="urg tinggi">Tinggi</span><span><kbd>A</kbd> ambil</span></div>
-          <div class="qrow"><b>APP-14 — Permintaan fitur ekspor</b><span>APP</span><span class="urg normal">Normal</span><span><kbd>A</kbd> ambil</span></div>
-          <div class="qrow"><b>IT-22 — Reset kata sandi</b><span>IT</span><span class="urg normal">Normal</span><span><kbd>A</kbd> ambil</span></div>
-          <div class="qfoot"><kbd>A</kbd> ambil tiket pertama · <kbd>S</kbd> ubah status · <kbd>/</kbd> cari · <kbd>?</kbd> bantuan pintasan</div>
+          <div class="qm-head"><b>Semua terbuka</b><span>15 tiket · prioritas → terlama</span></div>
+          <div class="qrow head"><span>Ringkasan</span><span>Pelapor</span><span>Prioritas</span><span>SLA</span></div>
+          <div class="qrow"><b>IT-21 — Akun tidak bisa login</b><span>User 2</span><span class="urg mendesak">Mendesak</span><span style="color:#dc2626">Terlewat</span></div>
+          <div class="qrow"><b>APP-12 — Gagal unggah lampiran</b><span>User 3</span><span class="urg tinggi">Tinggi</span><span style="color:#d97706">Hampir terlewat</span></div>
+          <div class="qrow"><b>APP-14 — Permintaan fitur ekspor</b><span>User 5</span><span class="urg normal">Normal</span><span>Masih aman</span></div>
+          <div class="qrow"><b>IT-22 — Reset kata sandi</b><span>User 1</span><span class="urg normal">Normal</span><span>Masih aman</span></div>
+          <div class="qfoot">Centang tiket → Tetapkan ke saya / Ubah status · <kbd>/</kbd> cari · <kbd>?</kbd> bantuan pintasan</div>
         </div>
       </figure>
     </div>
@@ -508,21 +516,19 @@
       <h2>Membaca status sekilas</h2>
       <p class="sub">Warna dan ikon badge membantu Anda langsung tahu apa yang harus dilakukan tanpa membuka tiketnya.</p>
     </div>
-    <div class="status-grid">
-      <div class="status-card"><span class="sw" style="background:#3b82f6;color:#fff">+</span><span><b>Baru</b><small>Baru dibuat, belum diproses</small></span></div>
-      <div class="status-card"><span class="sw" style="background:#f59e0b;color:#451a03">▶</span><span><b>Dikerjakan</b><small>Sedang dikerjakan tim</small></span></div>
-      <div class="status-card"><span class="sw" style="background:#a855f7;color:#fff">◎</span><span><b>Review</b><small>Menunggu peninjauan</small></span></div>
-      <div class="status-card"><span class="sw" style="background:#f97316;color:#431407">◷</span><span><b>Menunggu</b><small>Butuh balasan dari pemohon</small></span></div>
-      <div class="status-card"><span class="sw" style="background:#10b981;color:#052e16">✓</span><span><b>Selesai</b><small>Pekerjaan selesai</small></span></div>
+    <div class="status-grid" id="status-permintaan">
+      <div class="status-card"><span class="sw" style="background:#64748b;color:#fff">!</span><span><b>Akan dikerjakan</b><small>Baru masuk, belum disentuh tim</small></span></div>
+      <div class="status-card"><span class="sw" style="background:#3b82f6;color:#fff">▶</span><span><b>Dalam proses</b><small>Sedang dikerjakan tim</small></span></div>
+      <div class="status-card"><span class="sw" style="background:#f59e0b;color:#451a03">◷</span><span><b>Menunggu balasan</b><small>Butuh tanggapan dari Anda</small></span></div>
+      <div class="status-card"><span class="sw" style="background:#10b981;color:#052e16">✓</span><span><b>Selesai</b><small>Permintaan sudah diselesaikan</small></span></div>
     </div>
     <div class="lifecycle">
-      <span class="life new">Baru</span><span class="arr">→</span>
-      <span class="life prog">Dikerjakan</span><span class="arr">→</span>
-      <span class="life rev">Review</span><span class="arr">→</span>
-      <span class="life wait">Menunggu</span><span class="arr">→</span>
+      <span class="life new">Akan dikerjakan</span><span class="arr">→</span>
+      <span class="life prog">Dalam proses</span><span class="arr">→</span>
+      <span class="life wait">Menunggu balasan</span><span class="arr">→</span>
       <span class="life done">Selesai</span>
     </div>
-    <div class="note" style="max-width:720px;margin:18px auto 0"><b>Catatan:</b> Jika pemohon belum membalas, tiket berstatus <b>Menunggu</b>. Tiket yang sudah selesai dapat dibuka kembali ke <b>Dikerjakan</b>.</div>
+    <div class="note" style="max-width:720px;margin:18px auto 0"><b>Catatan:</b> Satu kategori status selalu memakai label, ikon, dan warna yang sama di seluruh aplikasi. Jika Anda diminta menanggapi, Anda akan melihat badge <b>Perlu balasan Anda</b> di sebelah judul — ini bukan status tersendiri, melainkan penanda agar permintaan tersebut tampil lebih atas. Papan pengembangan masih memakai status kerja tambahan (misalnya <i>Review</i>) yang termasuk dalam kategori <b>Dalam proses</b>.</div>
   </div>
 </section>
 
@@ -568,6 +574,9 @@
       <h2>Tips penting</h2>
     </div>
     <div class="tips">
+      <div class="tip" id="waktu-penyelesaian"><div class="tic">⏱️</div><h3>Waktu penyelesaian (SLA)</h3><p>Di antrean agen, kolom <b>Waktu penyelesaian</b> menunjukkan sisa waktu target. Teks <b>merah</b> berarti target terlewat; <b>kuning</b> berarti tersisa kurang dari 20%. Target mengikuti prioritas tiket.</p></div>
+      <div class="tip" id="akses-dan-akun"><div class="tic">🔑</div><h3>Minta akses atau akun</h3><p>Pilih kartu <b>Akses &amp; akun</b> di Beranda untuk meminta akun baru, mengubah kata sandi, atau memperbaiki hak akses. Sertakan nama akun dan alasan kebutuhan agar tim dapat langsung memproses.</p></div>
+      <div class="tip"><div class="tic">☰</div><h3>Menu di layar kecil</h3><p>Pada ponsel, sidebar ringkas menjadi bilah logo. Ketuk tombol menu untuk membuka daftar <b>Beranda</b>, <b>Permintaan saya</b>, <b>Antrean</b>, dan <b>Panduan penggunaan</b>.</p></div>
       <div class="tip"><div class="tic">🔒</div><h3>Catatan internal tetap rahasia</h3><p>Berlatar kuning dan hanya terlihat tim. Tidak pernah dikirim lewat email ke peminta.</p></div>
       <div class="tip"><div class="tic">📎</div><h3>Lampirkan bukti</h3><p>Tempel, seret, atau klik tombol lampiran di editor teks. Gambar tampil langsung di dalam deskripsi atau balasan; berkas lain menjadi tautan yang aman.</p></div>
       <div class="tip"><div class="tic">🎯</div><h3>Menu mengikuti peran Anda</h3><p>Sidebar otomatis menyesuaikan izin akun Anda — menu yang tidak berhak diakses akan tersembunyi.</p></div>
@@ -582,8 +591,8 @@
 <section style="padding-top:0">
   <div class="wrap">
     <div class="callout">
-      <h2>Siap membuat tiket pertama?</h2>
-      <p>Buka aplikasi, tekan <b>C</b>, pilih proyek, dan ceritakan kebutuhan Anda. Tim akan segera mengambil alih dari antrean.</p>
+      <h2>Siap membuat permintaan pertama?</h2>
+      <p>Buka <b>Beranda</b>, ketik kebutuhan Anda di kolom pencarian atau pilih kartu jenis permintaan. Tim akan segera mengambil alih dari antrean.</p>
       <a href="http://localhost:8000" class="btn btn-primary">Buka Ticketing System →</a>
     </div>
   </div>

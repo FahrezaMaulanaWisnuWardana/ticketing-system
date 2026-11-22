@@ -4,7 +4,7 @@
             <a class="text-sm text-brand-600 dark:text-brand-400" href="{{ route('requester.requests') }}">{{ __('common.my_requests') }}</a>
             <h1 class="mt-1 text-2xl font-semibold"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</h1>
             <div class="mt-2 flex items-center gap-2">
-                <x-status-badge :status="$ticket->status" requester />
+                <x-status-badge :status="$ticket->status" />
                 @php $slaStatus = app(App\Services\SlaService::class)->status($ticket); @endphp
                 <x-badge :tone="$slaStatus === 'breached' ? 'rose' : ($slaStatus === 'at_risk' ? 'amber' : 'emerald')">{{ __('sla.'.$slaStatus) }}</x-badge>
                 @if($ticket->assignee)<span class="text-sm text-slate-500 dark:text-slate-400">{{ __('common.assignee') }}: {{ $ticket->assignee->name }}</span>@endif
