@@ -11,5 +11,4 @@ storage/framework/views/*
 .env.*
 !.env.example
 build
-docs
 tests
