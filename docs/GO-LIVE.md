@@ -23,7 +23,7 @@ Evidence-oriented checklist. Items marked ⚠️ require verification on the act
 - [ ] Mail deliverability (SPF/DKIM/DMARC) and test notifications received.
 - [ ] Horizon/scheduler/Reverb supervised with healthchecks and empty failed-job queue.
 - [ ] Off-host encrypted backups, WAL/PITR if required, restore drill on production-sized copy.
-- [ ] Sentry receiving a test exception with release tag; alerts firing in a test.
+- [ ] Host log alerting receives a test application error and notifies the on-call.
 - [ ] k6 load targets met (`tests/load/load.js`) and recorded in LOADTEST.md.
 - [ ] Five pilot users complete the five critical journeys without help; create ticket <10 s.
 - [ ] Open known issues list reviewed and accepted by the owner.

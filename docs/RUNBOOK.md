@@ -44,7 +44,7 @@ Monthly restore drill: run `scripts/restore-test.sh` and record the result here.
 
 ## Alerts (wired hooks)
 
-`CheckSystemHealthJob` runs every 5 minutes and writes `health.scheduler_at` and `health.failed_jobs` to settings. It emits log warnings when: failed jobs > 10, backup older than 26h (or never recorded), disk usage > 80%. Connect these log lines to your log alerting (Sentry/PagerDuty/webhook) on the host. Add SSL-expiry and 5xx-rate alerts at the edge.
+`CheckSystemHealthJob` runs every 5 minutes and writes `health.scheduler_at` and `health.failed_jobs` to settings. It emits log warnings when: failed jobs > 10, backup older than 26h (or never recorded), disk usage > 80%. Connect these log lines to your log alerting (PagerDuty/webhook/email) on the host. Add SSL-expiry and 5xx-rate alerts at the edge.
 
 ## Restore drill (executed 2026-11-22)
 

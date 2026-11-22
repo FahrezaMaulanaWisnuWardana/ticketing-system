@@ -15,8 +15,7 @@
         "laravel/socialite": "^5.33",
         "laravel/tinker": "^3.2",
         "league/commonmark": "^2.10",
-        "livewire/livewire": "^3.8",
-        "sentry/sentry-laravel": "^4.31"
+        "livewire/livewire": "^3.8"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.8",
