@@ -1,0 +1,113 @@
+services:
+  app:
+    image: ${IMAGE:-ticketing:latest}
+    env_file: .env.production
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      CSP_MODE: enforce
+      DB_HOST: ${DB_HOST:-postgres}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+    volumes:
+      - storage:/var/www/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "artisan", "--version"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/prod/Dockerfile.web
+      args:
+        APP_IMAGE: ${IMAGE:-ticketing:latest}
+    image: ticketing-web:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+      - reverb
+    restart: unless-stopped
+
+  worker:
+    image: ${IMAGE:-ticketing:latest}
+    env_file: .env.production
+    environment:
+      APP_ENV: production
+      DB_HOST: ${DB_HOST:-postgres}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+    volumes:
+      - storage:/var/www/storage
+    depends_on:
+      - app
+    command: php artisan horizon
+    restart: unless-stopped
+
+  reverb:
+    image: ${IMAGE:-ticketing:latest}
+    env_file: .env.production
+    environment:
+      APP_ENV: production
+      DB_HOST: ${DB_HOST:-postgres}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+    volumes:
+      - storage:/var/www/storage
+    depends_on:
+      - app
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    restart: unless-stopped
+
+  scheduler:
+    image: ${IMAGE:-ticketing:latest}
+    env_file: .env.production
+    environment:
+      APP_ENV: production
+      DB_HOST: ${DB_HOST:-postgres}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+    volumes:
+      - storage:/var/www/storage
+    depends_on:
+      - app
+    command: php artisan schedule:work
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-ticketing}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+
+volumes:
+  postgres_data:
+  redis_data:
+  storage:

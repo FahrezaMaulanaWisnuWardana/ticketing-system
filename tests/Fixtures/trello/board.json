@@ -1,0 +1,56 @@
+{
+  "id": "board-1",
+  "name": "Sample Board",
+  "lists": [
+    {"id": "list-todo", "name": "To Do"},
+    {"id": "list-doing", "name": "In Progress"},
+    {"id": "list-review", "name": "In Review"},
+    {"id": "list-done", "name": "Done"}
+  ],
+  "members": [
+    {"id": "member-1", "username": "alice", "fullName": "Alice"}
+  ],
+  "labels": [
+    {"id": "label-1", "name": "bug"}
+  ],
+  "cards": [
+    {
+      "id": "card-1",
+      "name": "Login page is broken",
+      "desc": "Users cannot log in <script>alert(1)</script>",
+      "idList": "list-todo",
+      "idMembers": ["member-1"],
+      "idLabels": ["label-1"],
+      "due": "2026-12-01T10:00:00.000Z",
+      "url": "https://trello.com/c/card-1",
+      "pos": 1,
+      "checklists": [
+        {"id": "checklist-1", "checkItems": [{"name": "Reproduce", "state": "complete"}, {"name": "Fix", "state": "incomplete"}]}
+      ],
+      "attachments": []
+    },
+    {
+      "id": "card-2",
+      "name": "Archived card",
+      "desc": "",
+      "idList": "list-done",
+      "idMembers": [],
+      "idLabels": [],
+      "closed": true,
+      "url": "https://trello.com/c/card-2",
+      "pos": 2,
+      "checklists": [],
+      "attachments": []
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-comment-1",
+      "type": "commentCard",
+      "date": "2026-11-20T10:00:00.000Z",
+      "idMemberCreator": "member-1",
+      "memberCreator": {"fullName": "Alice"},
+      "data": {"text": "Investigating", "card": {"id": "card-1"}}
+    }
+  ]
+}

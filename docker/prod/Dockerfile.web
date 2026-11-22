@@ -1,0 +1,9 @@
+# syntax=docker/dockerfile:1.7
+ARG APP_IMAGE=ticketing:latest
+FROM ${APP_IMAGE} AS app
+FROM nginx:1.27-alpine
+COPY --from=app /var/www/public /var/www/public
+COPY docker/prod/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80 443
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD wget -q -O /dev/null http://127.0.0.1/up || exit 1

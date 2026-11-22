@@ -1,0 +1,13 @@
+{
+  "action": {
+    "id": "action-webhook-1",
+    "type": "updateCard",
+    "date": "2026-11-21T10:00:00.000Z",
+    "memberCreator": {"fullName": "Alice"},
+    "data": {
+      "card": {"id": "card-1", "name": "Login page is broken", "desc": "Users cannot log in", "idList": "list-doing", "due": null},
+      "old": {"idList": "list-todo"}
+    }
+  },
+  "model": {"id": "board-1"}
+}

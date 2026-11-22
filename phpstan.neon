@@ -1,0 +1,13 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - app
+        - database/factories
+        - database/seeders
+    tmpDir: build/phpstan
+    universalObjectCratesClasses:
+        - Livewire\Component
+        - Illuminate\Database\Eloquent\Model
