@@ -2,7 +2,7 @@
     <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
             <a href="{{ route('projects.show', $ticket->project) }}" class="text-sm text-brand-600">{{ $ticket->project->key }}</a>
-            <h1 class="text-2xl font-semibold">{{ $ticket->key }} — {{ $ticket->title }}</h1>
+            <h1 class="text-2xl font-semibold"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</h1>
             <div class="mt-2 flex flex-wrap items-center gap-2">
                 <x-status-badge :status="$ticket->status" />
                 <x-badge :tone="$ticket->priority->value === 'urgent' ? 'rose' : 'slate'">{{ __('priorities.'.$ticket->priority->value) }}</x-badge>
@@ -81,7 +81,7 @@
                         <article class="rounded-lg border p-3 {{ $comment->is_internal ? 'border-amber-300 bg-amber-50' : 'border-slate-200' }}">
                             <div class="flex items-center justify-between text-xs text-slate-500">
                                 <span>{{ $comment->user?->name }}</span>
-                                <span>{{ $comment->created_at->timezone(config('ticketing.display_timezone'))->format('d M H:i') }}</span>
+                                <span>{{ App\Support\DateFormat::format($comment->created_at) }}</span>
                             </div>
                             <div class="markdown mt-2">{!! $markdown->render($comment->body) !!}</div>
                             @if($comment->attachments->isNotEmpty())
@@ -165,7 +165,7 @@
                     <h2 class="mb-3 font-semibold">{{ __('common.activity') }}</h2>
                     <ul class="space-y-2 text-xs text-slate-600">
                         @foreach($activities as $activity)
-                            <li>{{ $activity->event }} @if($activity->field)· {{ $activity->field }}@endif · {{ $activity->created_at->timezone(config('ticketing.display_timezone'))->diffForHumans() }}</li>
+                            <li>{{ $activity->event }} @if($activity->field)· {{ $activity->field }}@endif · {{ App\Support\DateFormat::format($activity->created_at) }}</li>
                         @endforeach
                     </ul>
                 </div>

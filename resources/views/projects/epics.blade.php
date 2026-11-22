@@ -7,7 +7,7 @@
         @php $progress = App\Domain\ProgressCalculator::percent($epic->tickets()->whereIn('status', [App\Enums\TicketStatus::Done, App\Enums\TicketStatus::Closed])->count(), $epic->tickets_count); @endphp
         <div class="card">
             <h2 class="font-semibold">{{ $epic->key }} — {{ $epic->name }}</h2>
-            <p class="text-xs text-slate-500">{{ $epic->tickets_count }} {{ __('common.tickets') }}</p>
+            <p class="text-xs text-slate-500 tabular">{{ trans_choice('common.tickets_count', $epic->tickets_count) }}</p>
             <div class="mt-3 h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full bg-brand-500" style="width: {{ $progress }}%"></div></div>
             <p class="mt-1 text-xs text-slate-500">{{ $progress }}%</p>
         </div>

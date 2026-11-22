@@ -13,14 +13,15 @@ PHP 8.3, Laravel 13.43, PostgreSQL 16, Redis 7, Livewire 3, Alpine.js, Tailwind 
 ## Setup in 5 commands
 
 ```bash
-cp .env.example .env && php artisan key:generate
-docker compose up -d --build
+cp .env.example .env
+docker compose up -d --build --wait
 docker compose exec app php artisan migrate
-npm install && npm run build
 docker compose exec app php artisan db:seed   # local/staging only: demo data
 ```
 
 Open <http://localhost:8000>. Demo accounts (local only): `admin@example.com`, `lead@example.com`, `agent1@example.com`, `user1@example.com` — password `password123`.
+
+The dev stack starts Postgres 16, Redis 7, PHP-FPM, nginx, Horizon, the scheduler, Reverb and Mailpit (web UI at <http://localhost:8025>). Optional profiles: `docker compose --profile vite up -d` (Vite dev server on 5173) and `--profile minio` (object storage).
 
 Google login requires `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `ALLOWED_EMAIL_DOMAINS` in `.env`.
 
@@ -36,6 +37,7 @@ php artisan migrate:rollback --force   # verify reversibility
 
 ## Documentation
 
+- [UI craft rules](docs/DESIGN.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Security](docs/SECURITY.md)
 - [Deploy](docs/DEPLOY.md)

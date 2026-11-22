@@ -9,7 +9,7 @@
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div>
                         <h2 class="font-semibold">{{ $sprint->name }}</h2>
-                        <p class="text-xs text-slate-500">{{ $sprint->start_date->format('d M') }} – {{ $sprint->end_date->format('d M') }} · {{ $sprint->state }}</p>
+                        <p class="text-xs text-slate-500">{{ App\Support\DateFormat::date($sprint->start_date) }} – {{ App\Support\DateFormat::date($sprint->end_date) }} · {{ $sprint->state }}</p>
                     </div>
                     @can('manageSprint', $sprint)
                         <div class="flex gap-2">

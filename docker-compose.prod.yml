@@ -10,6 +10,7 @@ services:
       REDIS_HOST: ${REDIS_HOST:-redis}
     volumes:
       - storage:/var/www/storage
+      - bootstrap_cache:/var/www/bootstrap/cache
     depends_on:
       postgres:
         condition: service_healthy
@@ -20,7 +21,13 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    init: true
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 512M
 
   web:
     build:
@@ -29,13 +36,26 @@ services:
       args:
         APP_IMAGE: ${IMAGE:-ticketing:latest}
     image: ticketing-web:latest
+    depends_on:
+      app:
+        condition: service_started
+      reverb:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/up"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    init: true
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
-    depends_on:
-      - app
-      - reverb
-    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
 
   worker:
     image: ${IMAGE:-ticketing:latest}
@@ -46,10 +66,25 @@ services:
       REDIS_HOST: ${REDIS_HOST:-redis}
     volumes:
       - storage:/var/www/storage
+      - bootstrap_cache:/var/www/bootstrap/cache
     depends_on:
-      - app
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
     command: php artisan horizon
+    healthcheck:
+      test: ["CMD", "php", "artisan", "horizon:status"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    init: true
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
 
   reverb:
     image: ${IMAGE:-ticketing:latest}
@@ -60,10 +95,25 @@ services:
       REDIS_HOST: ${REDIS_HOST:-redis}
     volumes:
       - storage:/var/www/storage
+      - bootstrap_cache:/var/www/bootstrap/cache
     depends_on:
-      - app
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
     command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"exit(@fsockopen('127.0.0.1', 8080) ? 0 : 1);\""]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    init: true
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
 
   scheduler:
     image: ${IMAGE:-ticketing:latest}
@@ -74,10 +124,23 @@ services:
       REDIS_HOST: ${REDIS_HOST:-redis}
     volumes:
       - storage:/var/www/storage
+      - bootstrap_cache:/var/www/bootstrap/cache
     depends_on:
-      - app
+      app:
+        condition: service_started
     command: php artisan schedule:work
+    healthcheck:
+      test: ["CMD", "php", "artisan", "schedule:list"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    init: true
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
 
   postgres:
     image: postgres:16-alpine
@@ -90,18 +153,36 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_DATABASE:-ticketing}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 15s
+    init: true
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
 
   redis:
     image: redis:7-alpine
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"${REDIS_PASSWORD:-}\" ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    init: true
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
 
 secrets:
   db_password:
@@ -111,3 +192,4 @@ volumes:
   postgres_data:
   redis_data:
   storage:
+  bootstrap_cache:

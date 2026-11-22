@@ -14,7 +14,7 @@
                         <article x-data="{ status: '{{ $ticket->status->value }}' }" class="rounded-lg border border-slate-200 p-3">
                             <a class="text-sm font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }}</a>
                             <p class="mt-1 text-sm">{{ $ticket->title }}</p>
-                            <p class="mt-2 text-xs text-slate-500">{{ $ticket->assignee?->name ?? __('common.assignee') }} · {{ $ticket->estimate ?? '—' }} pts</p>
+                            <p class="mt-2 text-xs text-slate-500">{{ $ticket->assignee?->name ?? __('common.assignee') }} · <span class="tabular">{{ $ticket->estimate ?? '—' }} pts</span></p>
                             @can('changeStatus', $ticket)
                                 <label class="sr-only" for="move-{{ $ticket->id }}">{{ __('common.status') }}</label>
                                 <select id="move-{{ $ticket->id }}" class="input mt-2 w-full text-xs" :value="status"

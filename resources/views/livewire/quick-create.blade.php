@@ -19,7 +19,7 @@
             @endcan
             <div class="space-y-1">
                 <label for="qc-title" class="block text-sm font-medium text-slate-700">{{ __('common.title') }}</label>
-                <input id="qc-title" wire:model="title" class="input w-full" maxlength="200" required autofocus>
+                <input id="qc-title" wire:model="title" class="input w-full" maxlength="200" required>
                 @error('title')<p class="text-xs text-rose-600" role="alert">{{ $message }}</p>@enderror
             </div>
             <div class="space-y-1">

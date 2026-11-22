@@ -7,7 +7,7 @@
         <thead><tr><th>{{ __('common.created_at') }}</th><th>{{ __('common.action') }}</th><th>{{ __('common.subject') }}</th><th>{{ __('common.ip') }}</th></tr></thead>
         <tbody>@foreach($logs as $log)
             <tr class="border-t border-slate-100">
-                <td>{{ $log->created_at?->timezone(config('ticketing.display_timezone'))->format('d M Y H:i') }}</td>
+                <td>{{ App\Support\DateFormat::format($log->created_at) }}</td>
                 <td>{{ $log->action }}</td>
                 <td>{{ $log->subject_type }} {{ $log->subject_id }}</td>
                 <td>{{ $log->ip }}</td>

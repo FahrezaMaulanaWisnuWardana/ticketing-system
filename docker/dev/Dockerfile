@@ -12,11 +12,11 @@ RUN apk add --no-cache \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
-COPY . .
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist --no-progress
 
-RUN composer install --no-interaction --prefer-dist --no-scripts \
-    && cp .env.example .env \
-    && php artisan key:generate --ansi
+COPY . .
+RUN php artisan package:discover --ansi
 
 COPY docker/dev/php.ini /usr/local/etc/php/conf.d/99-ticketing.ini
 COPY docker/dev/entrypoint.sh /usr/local/bin/entrypoint

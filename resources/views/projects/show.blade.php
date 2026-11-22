@@ -3,7 +3,7 @@
 @section('content')
 <div class="flex flex-wrap items-start justify-between gap-4">
     <div>
-        <h1 class="text-2xl font-semibold">{{ $project->name }} <span class="text-base text-slate-400">{{ $project->key }}</span></h1>
+        <h1 class="text-2xl font-semibold">{{ $project->name }} <span class="text-base text-slate-400" translate="no">{{ $project->key }}</span></h1>
         <p class="mt-1 text-sm text-slate-600">{{ __('projects.owner') }}: {{ $project->owner?->name }}</p>
     </div>
     <div class="flex gap-2">

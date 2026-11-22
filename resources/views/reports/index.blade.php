@@ -11,9 +11,9 @@
 </div>
 
 <div class="mt-6 grid gap-4 md:grid-cols-3">
-    <div class="card"><h2 class="font-semibold">{{ __('reports.sla_hit_rate') }}</h2><p class="mt-2 text-2xl">{{ $summary['sla_hit_rate'] }}%</p></div>
-    <div class="card"><h2 class="font-semibold">{{ __('reports.avg_first_response') }}</h2><p class="mt-2 text-2xl">{{ $summary['avg_first_response_minutes'] }} min</p></div>
-    <div class="card"><h2 class="font-semibold">{{ __('reports.avg_resolve') }}</h2><p class="mt-2 text-2xl">{{ $summary['avg_resolve_minutes'] }} min</p></div>
+    <div class="card"><h2 class="font-semibold">{{ __('reports.sla_hit_rate') }}</h2><p class="mt-2 text-2xl tabular">{{ $summary['sla_hit_rate'] }}%</p></div>
+    <div class="card"><h2 class="font-semibold">{{ __('reports.avg_first_response') }}</h2><p class="mt-2 text-2xl tabular">{{ $summary['avg_first_response_minutes'] }} min</p></div>
+    <div class="card"><h2 class="font-semibold">{{ __('reports.avg_resolve') }}</h2><p class="mt-2 text-2xl tabular">{{ $summary['avg_resolve_minutes'] }} min</p></div>
 </div>
 
 <div class="mt-6 grid gap-4 md:grid-cols-2">

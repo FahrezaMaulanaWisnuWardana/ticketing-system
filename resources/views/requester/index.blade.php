@@ -24,10 +24,10 @@
         <thead><tr><th>{{ __('common.title') }}</th><th>{{ __('common.project') }}</th><th>{{ __('common.status') }}</th><th>{{ __('common.updated_at') }}</th></tr></thead>
         <tbody>@foreach($tickets as $ticket)
             <tr class="border-t border-slate-100">
-                <td><a class="font-medium text-brand-700 hover:underline" href="{{ route('requester.requests.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a></td>
+                <td><a class="font-medium text-brand-700 hover:underline" href="{{ route('requester.requests.show', $ticket) }}"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</a></td>
                 <td>{{ $ticket->project?->key }}</td>
                 <td><x-status-badge :status="$ticket->status" requester /></td>
-                <td>{{ $ticket->updated_at->timezone(config('ticketing.display_timezone'))->format('d M Y H:i') }}</td>
+                <td>{{ App\Support\DateFormat::format($ticket->updated_at) }}</td>
             </tr>
         @endforeach</tbody>
     </table>

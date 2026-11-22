@@ -3,7 +3,8 @@
         @forelse($replies as $reply)
             <li class="flex items-center justify-between rounded-lg border border-slate-200 p-2 text-sm">
                 <span><strong>{{ $reply->title }}</strong> — {{ \Illuminate\Support\Str::limit($reply->body, 80) }}</span>
-                <button class="text-xs text-rose-600" wire:click="delete({{ $reply->id }})">{{ __('common.delete') }}</button>
+                <button class="text-xs text-rose-600" wire:click="delete({{ $reply->id }})"
+                        onclick="return confirm('{{ __('common.confirm_delete') }}')">{{ __('common.delete') }}</button>
             </li>
         @empty
             <li class="text-sm text-slate-500">{{ __('common.empty_hint') }}</li>

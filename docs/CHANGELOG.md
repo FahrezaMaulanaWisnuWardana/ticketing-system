@@ -1,5 +1,21 @@
 # Changelog
 
+## Docker packaging
+
+- Production Dockerfile is now truly multi-stage (Node asset build, Composer deps, non-root runtime with FPM tuning).
+- Dev image generates APP_KEY safely in the entrypoint and discovers packages at build time.
+- Compose stacks add healthchecks, `init`, restart policies, resource limits, and optional `vite`/`minio` profiles.
+- Production compose shares `storage` and `bootstrap/cache` volumes, uses a DB secret, and defers `config:cache` to deploy time.
+- Added `.env.production.example`; README and DEPLOY docs updated.
+
+## UI polish (emilkowalski/skills + Web Interface Guidelines)
+
+- Explicit easing/property transitions, `:active` press feedback, reduced-motion and touch-hover gating.
+- Modal/toast entrance from `scale(0.96)` with keyboard-trigger suppression; centered modal origin preserved.
+- Locale-aware dates (`IntlDateFormatter`, absolute after 7 days), pluralized counts, tabular numerals, `translate="no"` identifiers.
+- Skip link, live region for async notices, long-content wrapping, destructive confirmations, no mobile autofocus.
+- Added `docs/DESIGN.md` with the applied rules.
+
 ## Phase 6b/6c — Trello integration (complete)
 
 - Optional, flag-gated Trello module: encrypted connection settings, adapter/client with rate limiting, SSRF protection and replay-safe signed webhooks.

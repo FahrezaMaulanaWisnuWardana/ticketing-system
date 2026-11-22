@@ -14,10 +14,10 @@ echo "[deploy] pre-deploy database snapshot"
 pg_dump -Fc "${DB_URL}" > "backups/pre-deploy-${SHA}.dump"
 
 echo "[deploy] running migrations"
-IMAGE="${IMAGE}" docker compose -f docker-compose.prod.yml run --rm --no-deps app php artisan migrate --force
+IMAGE="${IMAGE}" docker compose -f docker-compose.prod.yml run --rm app php artisan migrate --force
 
 echo "[deploy] starting services"
-IMAGE="${IMAGE}" docker compose -f docker-compose.prod.yml up -d --remove-orphans
+IMAGE="${IMAGE}" docker compose -f docker-compose.prod.yml up -d --wait --remove-orphans
 
 echo "[deploy] rebuilding caches"
 IMAGE="${IMAGE}" docker compose -f docker-compose.prod.yml exec -T app sh -c \

@@ -15,11 +15,11 @@
         <tbody>
         @foreach($tickets as $ticket)
             <tr class="border-t border-slate-100">
-                <td><a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a></td>
+                <td><a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</a></td>
                 <td>{{ $ticket->project->key }}</td>
                 <td><x-status-badge :status="$ticket->status" :requester="auth()->user()->isRequester()" /></td>
                 <td>{{ $ticket->assignee?->name ?? '—' }}</td>
-                <td>{{ $ticket->created_at->timezone(config('ticketing.display_timezone'))->format('d M Y H:i') }}</td>
+                <td>{{ App\Support\DateFormat::format($ticket->created_at) }}</td>
             </tr>
         @endforeach
         </tbody>

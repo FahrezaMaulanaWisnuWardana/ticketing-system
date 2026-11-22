@@ -44,7 +44,7 @@
     <div class="card">
         <h2 class="font-semibold">{{ __('pm.milestones') }}</h2>
         <ul class="mt-3 space-y-2 text-sm">@forelse($milestones as $milestone)
-            <li class="flex justify-between"><span>{{ $milestone->name }}</span><span class="text-slate-500">{{ $milestone->due_date->format('d M') }} · {{ $milestone->state }}</span></li>
+            <li class="flex justify-between"><span>{{ $milestone->name }}</span><span class="text-slate-500">{{ App\Support\DateFormat::date($milestone->due_date) }} · {{ $milestone->state }}</span></li>
         @empty<li class="text-slate-500">—</li>@endforelse</ul>
     </div>
     <div class="card">

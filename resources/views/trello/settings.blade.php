@@ -14,7 +14,7 @@
             <div>
                 <h2 class="font-semibold">{{ $connection->trello_board_name ?? $connection->trello_board_id }}</h2>
                 <p class="text-sm text-slate-600">{{ __('trello.status') }}: {{ $connection->status->value }} · {{ __('trello.mode') }}: {{ $connection->mode->value }} · {{ __('trello.token') }}: ••••{{ $connection->lastFour() }}</p>
-                <p class="text-xs text-slate-500">{{ __('trello.last_sync') }}: {{ $connection->last_synced_at?->diffForHumans() ?? '—' }}</p>
+                <p class="text-xs text-slate-500">{{ __('trello.last_sync') }}: {{ App\Support\DateFormat::format($connection->last_synced_at) }}</p>
                 @if($connection->last_error)<p class="mt-2 text-sm text-rose-600">{{ $connection->last_error }}</p>@endif
             </div>
             <div class="flex flex-wrap gap-2">
@@ -53,7 +53,7 @@
     <div class="card mt-6">
         <h2 class="mb-3 font-semibold">{{ __('trello.imports') }}</h2>
         <ul class="text-sm">@foreach($imports as $run)
-            <li><a class="text-brand-600 underline" href="{{ route('trello.import.report', $run) }}">#{{ $run->id }} — {{ $run->status }}</a> · {{ $run->finished_at?->diffForHumans() }}</li>
+            <li><a class="text-brand-600 underline" href="{{ route('trello.import.report', $run) }}">#{{ $run->id }} — {{ $run->status }}</a> · {{ App\Support\DateFormat::format($run->finished_at) }}</li>
         @endforeach</ul>
     </div>
 

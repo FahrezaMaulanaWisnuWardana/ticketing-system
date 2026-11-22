@@ -25,7 +25,7 @@
             <tbody>
             @foreach($tickets as $row)
                 <tr class="border-t border-slate-100">
-                    <td><a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $row) }}">{{ $row->key }} — {{ $row->title }}</a></td>
+                    <td><a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $row) }}"><span translate="no">{{ $row->key }}</span> — {{ $row->title }}</a></td>
                     <td>{{ $row->project?->key }}</td>
                     <td><x-status-badge :status="$row->status" :requester="auth()->user()->isRequester()" /></td>
                     <td>{{ __('priorities.'.$row->priority->value) }}</td>

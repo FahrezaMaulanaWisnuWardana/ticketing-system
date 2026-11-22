@@ -2,29 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --duration-ui: 160ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    html { overscroll-behavior: none; }
+}
+
 @layer components {
-    .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500; }
-    .btn-primary { @apply bg-brand-600 text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50; }
-    .btn-secondary { @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50; }
-    .btn-ghost { @apply text-slate-600 hover:bg-slate-100; }
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand-500;
+        transition: transform var(--duration-ui) var(--ease-out),
+                    background-color var(--duration-ui) var(--ease-out),
+                    border-color var(--duration-ui) var(--ease-out),
+                    color var(--duration-ui) var(--ease-out);
+        transform-origin: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { transform: none; }
+    .btn-primary { @apply bg-brand-600 text-white disabled:cursor-not-allowed disabled:opacity-50; }
+    .btn-secondary { @apply border border-slate-300 bg-white text-slate-700; }
+    .btn-ghost { @apply text-slate-600; }
+    @media (hover: hover) and (pointer: fine) {
+        .btn-primary:hover { @apply bg-brand-700; }
+        .btn-secondary:hover { @apply bg-slate-50; }
+        .btn-ghost:hover { @apply bg-slate-100; }
+    }
+
     .input { @apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-slate-400 focus:border-brand-500; }
-    .card { @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm; }
-    .nav-link { @apply rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900; }
+    .card { @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm; min-width: 0; }
+    .nav-link {
+        @apply rounded-lg px-3 py-2 text-sm font-medium text-slate-600;
+        transition: background-color var(--duration-ui) var(--ease-out), color var(--duration-ui) var(--ease-out);
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    @media (hover: hover) and (pointer: fine) {
+        .nav-link:hover { @apply bg-slate-100 text-slate-900; }
+    }
     .alert { @apply rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800; }
     .alert-error { @apply border-rose-200 bg-rose-50 text-rose-800; }
     .badge { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium; }
     .table { @apply min-w-full divide-y divide-slate-200 text-sm; }
-    .table th { @apply px-3 py-2 text-left font-semibold text-slate-600; }
-    .table td { @apply px-3 py-2 align-top; }
+    .table th, .table td { @apply px-3 py-2; min-width: 0; }
+    .table td { @apply align-top break-words; }
+
+    .modal-overlay { overscroll-behavior: contain; }
+    .ui-enter-active, .ui-leave-active {
+        transition: transform 180ms var(--ease-out), opacity 180ms var(--ease-out);
+    }
+    .ui-enter-start, .ui-leave-end { opacity: 0; transform: scale(0.96); }
+    .ui-enter-end, .ui-leave-start { opacity: 1; transform: scale(1); }
+    .ui-overlay-enter-active, .ui-overlay-leave-active { transition: opacity 150ms var(--ease-out); }
+    .ui-overlay-enter-start, .ui-overlay-leave-end { opacity: 0; }
+    .ui-overlay-enter-end, .ui-overlay-leave-start { opacity: 1; }
+    .modal-panel {
+        transform-origin: center;
+        transition: transform 180ms var(--ease-out), opacity 180ms var(--ease-out);
+        @starting-style {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+    }
+    .toast-panel {
+        transition: transform 200ms var(--ease-out), opacity 200ms var(--ease-out);
+        @starting-style {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+    }
 }
 
 @layer base {
     :root { color-scheme: light; }
+    html { -webkit-text-size-adjust: 100%; }
     body { @apply bg-slate-50 text-slate-900 antialiased; }
+    h1, h2, h3, h4 { letter-spacing: -0.02em; text-wrap: balance; }
     :focus-visible { @apply outline-none ring-2 ring-brand-500 ring-offset-2; }
     [x-cloak] { display: none !important; }
-    .markdown { @apply prose prose-slate max-w-none prose-sm; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .markdown { @apply prose prose-slate prose-sm; max-width: 65ch; }
     .markdown a { @apply text-brand-600 underline; }
     .markdown code { @apply rounded bg-slate-100 px-1 py-0.5 text-xs; }
     .markdown pre { @apply overflow-x-auto rounded bg-slate-900 p-3 text-slate-100; }
+}
+
+/* Keyboard-triggered UI must feel instant — no entrance animation. */
+html[data-keyboard] .modal-panel,
+html[data-keyboard] .toast-panel,
+html[data-keyboard] .ui-enter-active,
+html[data-keyboard] .ui-leave-active,
+html[data-keyboard] .ui-overlay-enter-active,
+html[data-keyboard] .ui-overlay-leave-active { transition: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+    .btn, .nav-link, .modal-panel, .toast-panel,
+    .ui-enter-active, .ui-leave-active, .ui-overlay-enter-active, .ui-overlay-leave-active { transition-duration: 0ms !important; }
+    .btn:active { transform: none; }
+    .modal-panel, .toast-panel { transform: none !important; }
+    .toast-panel { transition: opacity 120ms ease !important; }
 }

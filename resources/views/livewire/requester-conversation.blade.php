@@ -2,7 +2,7 @@
     <div class="space-y-6 lg:col-span-2">
         <div>
             <a class="text-sm text-brand-600" href="{{ route('requester.requests') }}">{{ __('common.my_requests') }}</a>
-            <h1 class="mt-1 text-2xl font-semibold">{{ $ticket->key }} — {{ $ticket->title }}</h1>
+            <h1 class="mt-1 text-2xl font-semibold"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</h1>
             <div class="mt-2 flex items-center gap-2">
                 <x-status-badge :status="$ticket->status" requester />
                 @php $slaStatus = app(App\Services\SlaService::class)->status($ticket); @endphp
@@ -23,7 +23,7 @@
                     <article class="rounded-lg border border-slate-200 p-3">
                         <div class="flex items-center justify-between text-xs text-slate-500">
                             <span>{{ $comment->user?->name }}</span>
-                            <span>{{ $comment->created_at->timezone(config('ticketing.display_timezone'))->format('d M H:i') }}</span>
+                            <span>{{ App\Support\DateFormat::format($comment->created_at) }}</span>
                         </div>
                         <div class="markdown mt-2">{!! $markdown->render($comment->body) !!}</div>
                         @if($comment->attachments->isNotEmpty())

@@ -17,12 +17,12 @@
                 <tbody>@foreach($tickets as $ticket)
                     <tr class="border-t border-slate-100 {{ $activeTicketId === $ticket->id ? 'bg-brand-50' : '' }}">
                         <td>
-                            <a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a>
+                            <a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</a>
                             <div class="text-xs text-slate-500">{{ $ticket->project?->key }}</div>
                         </td>
                         <td><x-badge :tone="$ticket->priority->value === 'urgent' ? 'rose' : 'slate'">{{ __('priorities.'.$ticket->priority->value) }}</x-badge></td>
                         <td>{{ $ticket->requester?->name ?? '—' }}</td>
-                        <td>{{ $ticket->created_at->timezone(config('ticketing.display_timezone'))->diffForHumans() }}</td>
+                        <td>{{ App\Support\DateFormat::format($ticket->created_at) }}</td>
                         <td>
                             <button class="btn btn-secondary text-xs" wire:click="assign({{ $ticket->id }})">{{ __('common.assign_to_me') }}</button>
                             <button class="btn btn-ghost text-xs" wire:click="$set('activeTicketId', {{ $ticket->id }})">{{ __('common.reply') }}</button>

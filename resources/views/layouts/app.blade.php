@@ -11,7 +11,9 @@
     @livewireStyles
 </head>
 <body class="min-h-screen">
-<div class="min-h-screen lg:flex" x-data="{ help: false }">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow">{{ __('common.skip_to_content') }}</a>
+<div class="min-h-screen lg:flex" x-data="{ help: false, notification: '' }"
+     x-on:notify.window="notification = $event.detail.message ?? ''; setTimeout(() => notification = '', 4000)">
     <aside class="w-full lg:w-60 shrink-0 border-b border-slate-200 bg-white lg:min-h-screen lg:border-b-0 lg:border-r p-4">
         <a href="{{ route('home') }}" class="flex items-center gap-2 font-semibold text-brand-700">
             <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">T</span>
@@ -65,7 +67,7 @@
             </div>
         </header>
 
-        <main class="mx-auto max-w-7xl p-4 sm:p-6">
+        <main id="main-content" class="mx-auto max-w-7xl p-4 sm:p-6" tabindex="-1">
             @if(session('status'))<div class="alert mb-4" role="status">{{ session('status') }}</div>@endif
             @if($errors->any())
                 <div class="alert alert-error mb-4" role="alert">
@@ -84,6 +86,12 @@
         </div>
     </div>
 </div>
+
+<div x-show="notification" x-cloak aria-live="polite" role="status"
+     x-transition:enter="ui-enter-active" x-transition:enter-start="ui-enter-start" x-transition:enter-end="ui-enter-end"
+     x-transition:leave="ui-leave-active" x-transition:leave-start="ui-leave-start" x-transition:leave-end="ui-leave-end"
+     class="toast-panel fixed bottom-4 right-4 z-50 max-w-sm rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm shadow-lg"
+     x-text="notification"></div>
 
 @livewire('quick-create')
 @livewireScripts

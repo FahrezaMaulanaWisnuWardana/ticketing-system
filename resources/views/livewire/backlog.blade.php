@@ -12,7 +12,7 @@
                     <span class="ml-2 text-sm">{{ $ticket->title }}</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="text-xs text-slate-500">{{ $ticket->estimate ?? '—' }} pts</span>
+                    <span class="text-xs text-slate-500 tabular">{{ $ticket->estimate ?? '—' }} pts</span>
                     @if($sprint && $ticket->kind->value === 'dev')
                         <button class="btn btn-secondary text-xs" wire:click="moveToSprint({{ $ticket->id }})">{{ __('dev.move_to_sprint') }}</button>
                     @endif

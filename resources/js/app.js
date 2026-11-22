@@ -49,6 +49,8 @@ Alpine.directive('shortcut', (el, { expression }, { cleanup }) => {
         if (target instanceof HTMLElement && target.closest('input, textarea, select, [contenteditable="true"]')) return;
         if (event.key.toLowerCase() === expression.toLowerCase() && !event.metaKey && !event.ctrlKey && !event.altKey) {
             event.preventDefault();
+            document.documentElement.dataset.keyboard = 'true';
+            setTimeout(() => { delete document.documentElement.dataset.keyboard; }, 0);
             if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
                 el.focus();
             } else {
