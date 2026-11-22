@@ -7,7 +7,7 @@
         <x-input name="name" :label="__('common.name')" required />
         <x-input name="email" :label="__('common.email')" type="email" required />
         <div class="space-y-1">
-            <label for="role" class="block text-sm font-medium text-slate-700">{{ __('common.role') }}</label>
+            <label for="role" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('common.role') }}</label>
             <select id="role" name="role" class="input w-full">
                 @foreach(App\Enums\Role::cases() as $case)<option value="{{ $case->value }}">{{ __('roles.'.$case->value) }}</option>@endforeach
             </select>

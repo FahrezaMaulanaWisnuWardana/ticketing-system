@@ -69,7 +69,7 @@ final class ProjectController extends Controller
         Gate::authorize('view', $project);
 
         $tickets = $project->tickets()
-            ->with('assignee:id,name', 'requester:id,name', 'category:id,name')
+            ->with('project:id,key', 'assignee:id,name', 'requester:id,name', 'category:id,name')
             ->orderBy('rank')
             ->paginate(25);
 

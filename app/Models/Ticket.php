@@ -86,7 +86,13 @@ class Ticket extends Model
 
     public function getKeyAttribute(): string
     {
-        return $this->project->key.'-'.$this->number;
+        // The key depends on the project's key. Avoid triggering a lazy-loading
+        // violation (strict mode is enabled) when the relation was not eager loaded.
+        $projectKey = $this->relationLoaded('project')
+            ? $this->getRelation('project')?->key
+            : $this->project()->value('key');
+
+        return $projectKey.'-'.$this->number;
     }
 
     /** @param mixed $value */

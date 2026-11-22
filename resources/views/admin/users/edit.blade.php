@@ -6,13 +6,13 @@
         @csrf @method('PUT')
         <x-input name="name" :label="__('common.name')" :value="$subject->name" required />
         <div class="space-y-1">
-            <label for="role" class="block text-sm font-medium text-slate-700">{{ __('common.role') }}</label>
+            <label for="role" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('common.role') }}</label>
             <select id="role" name="role" class="input w-full">
                 @foreach(App\Enums\Role::cases() as $case)<option value="{{ $case->value }}" @selected($subject->role === $case)>{{ __('roles.'.$case->value) }}</option>@endforeach
             </select>
         </div>
         <div class="space-y-1">
-            <label for="timezone" class="block text-sm font-medium text-slate-700">{{ __('common.timezone') }}</label>
+            <label for="timezone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('common.timezone') }}</label>
             <input id="timezone" name="timezone" class="input w-full" value="{{ $subject->timezone }}">
         </div>
         <button class="btn btn-primary" type="submit">{{ __('common.save') }}</button>

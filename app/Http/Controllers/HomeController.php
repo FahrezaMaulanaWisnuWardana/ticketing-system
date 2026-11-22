@@ -18,7 +18,7 @@ final class HomeController extends Controller
         }
 
         $tickets = Ticket::query()
-            ->with('project', 'assignee', 'requester')
+            ->with('project', 'assignee', 'requester', 'reporter:id,name')
             ->when($user->isRequester(), static fn ($query) => $query->where(static fn ($inner) => $inner
                 ->where('requester_id', $user->id)
                 ->orWhere('reporter_id', $user->id)))

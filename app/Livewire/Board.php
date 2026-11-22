@@ -45,17 +45,20 @@ final class Board extends Component
     {
         $projectId = $this->projectId;
         $sprintId = $this->sprintId;
+        $columns = [TicketStatus::InProgress, TicketStatus::InReview, TicketStatus::WaitingRequester, TicketStatus::Done];
+        $statuses = array_merge(...array_map(static fn (TicketStatus $status): array => $status->groupValues(), $columns));
+
         $tickets = Ticket::query()
             ->with('project:id,key,name', 'assignee:id,name', 'labels:id,name,color')
             ->where('project_id', $projectId)
             ->when($sprintId !== null, static fn ($query) => $query->where('sprint_id', $sprintId))
-            ->whereIn('status', [TicketStatus::Todo, TicketStatus::InProgress, TicketStatus::InReview, TicketStatus::Done])
+            ->whereIn('status', $statuses)
             ->orderBy('rank')
             ->get();
 
         return view('livewire.board', [
-            'tickets' => $tickets->groupBy(static fn (Ticket $ticket): string => $ticket->status->value),
-            'columns' => [TicketStatus::Todo, TicketStatus::InProgress, TicketStatus::InReview, TicketStatus::Done],
+            'tickets' => $tickets->groupBy(static fn (Ticket $ticket): string => $ticket->status->group()->value),
+            'columns' => $columns,
             'sprints' => Project::findOrFail($this->projectId)->sprints()->orderByDesc('start_date')->get(),
         ]);
     }

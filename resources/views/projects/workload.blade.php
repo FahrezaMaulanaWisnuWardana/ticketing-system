@@ -6,7 +6,7 @@
     <table class="table">
         <thead><tr><th>{{ __('common.name') }}</th><th>{{ __('common.tickets') }}</th><th>{{ __('pm.points') }}</th></tr></thead>
         <tbody>@forelse($workload as $row)
-            <tr class="border-t border-slate-100"><td>{{ $row['name'] }}</td><td class="tabular">{{ $row['count'] }}</td><td class="tabular">{{ $row['points'] }}</td></tr>
+            <tr class="border-t border-slate-100 dark:border-slate-800"><td>{{ $row['name'] }}</td><td class="tabular">{{ $row['count'] }}</td><td class="tabular">{{ $row['points'] }}</td></tr>
         @empty<tr><td colspan="3">{{ __('common.empty_hint') }}</td></tr>@endforelse</tbody>
     </table>
 </div>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Enums\TicketStatus;
 use App\Models\SavedFilter;
 use App\Models\Ticket;
 use App\Models\User;
@@ -52,22 +53,31 @@ final class DevList extends Component
         $assignee = $this->assignee;
         $label = $this->label;
         $search = $this->search;
+        $statusCase = TicketStatus::tryFrom($status);
         $tickets = Ticket::query()
             ->with('project:id,key,name', 'assignee:id,name', 'labels:id,name,color')
-            ->where('project_id', $projectId)
-            ->when($status !== '', static fn ($query) => $query->where('status', $status))
-            ->when($assignee !== '', static fn ($query) => $query->where('assignee_id', (int) $assignee))
-            ->when($label !== '', static fn ($query) => $query->whereHas('labels', static fn ($inner) => $inner->where('labels.id', (int) $label)))
-            ->when($search !== '', static function ($query) use ($search): void {
-                $query->whereRaw("search @@ plainto_tsquery('simple', ?)", [$search]);
-            })
-            ->orderBy('rank')
-            ->paginate(25);
+            ->where('project_id', $projectId);
+
+        if ($statusCase !== null) {
+            $tickets->whereIn('status', $statusCase->groupValues());
+        }
+        if ($assignee !== '') {
+            $tickets->where('assignee_id', (int) $assignee);
+        }
+        if ($label !== '') {
+            $tickets->whereHas('labels', static fn ($inner) => $inner->where('labels.id', (int) $label));
+        }
+        if ($search !== '') {
+            $tickets->whereRaw("search @@ plainto_tsquery('simple', ?)", [$search]);
+        }
+
+        $tickets = $tickets->orderBy('rank')->paginate(25);
 
         $user = auth('web')->user();
 
         return view('livewire.dev-list', [
             'tickets' => $tickets,
+            'statuses' => TicketStatus::canonicalCases(),
             'filters' => $user instanceof User ? SavedFilter::where('user_id', $user->id)->get() : collect(),
             'agents' => User::whereIn('role', ['agent', 'admin'])->orderBy('name')->get(),
         ]);

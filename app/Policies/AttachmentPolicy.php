@@ -12,6 +12,12 @@ final class AttachmentPolicy
 {
     public function view(User $user, Attachment $attachment): bool
     {
+        // Files uploaded from a rich-text editor before the ticket exists are
+        // visible to their uploader until the form claims them.
+        if ($attachment->ticket_id === null) {
+            return $attachment->user_id === $user->id;
+        }
+
         return app(TicketPolicy::class)->view($user, Ticket::withoutGlobalScopes()->findOrFail($attachment->ticket_id));
     }
 

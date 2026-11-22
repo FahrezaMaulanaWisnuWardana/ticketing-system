@@ -111,3 +111,11 @@ function fakeGoogle(array $attributes): void
     $provider->shouldReceive('user')->andReturn($socialUser);
     Socialite::shouldReceive('driver')->with('google')->andReturn($provider);
 }
+
+it('serves the 2FA challenge without requiring an authenticated session', function (): void {
+    $this->get(route('2fa.challenge'))->assertRedirect(route('login'));
+
+    $this->withSession(['auth.2fa_user_id' => User::factory()->create()->id])
+        ->get(route('2fa.challenge'))
+        ->assertOk();
+});

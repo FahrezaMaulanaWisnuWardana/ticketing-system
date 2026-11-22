@@ -42,7 +42,7 @@
     <ul class="mb-4 space-y-1 text-sm">@foreach($holidays as $holiday)
         <li class="flex justify-between"><span>{{ $holiday->date->format('Y-m-d') }} — {{ $holiday->name }}</span>
             <form method="POST" action="{{ route('admin.settings.sla.holidays.destroy', $holiday) }}">@csrf @method('DELETE')
-                <button class="text-rose-600">{{ __('common.delete') }}</button></form>
+                <button class="text-rose-600 dark:text-rose-400">{{ __('common.delete') }}</button></form>
         </li>
     @endforeach</ul>
     <form method="POST" action="{{ route('admin.settings.sla.holidays.store') }}" class="flex flex-wrap gap-2">

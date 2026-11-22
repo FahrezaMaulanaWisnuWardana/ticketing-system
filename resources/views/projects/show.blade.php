@@ -3,10 +3,11 @@
 @section('content')
 <div class="flex flex-wrap items-start justify-between gap-4">
     <div>
-        <h1 class="text-2xl font-semibold">{{ $project->name }} <span class="text-base text-slate-400" translate="no">{{ $project->key }}</span></h1>
-        <p class="mt-1 text-sm text-slate-600">{{ __('projects.owner') }}: {{ $project->owner?->name }}</p>
+        <h1 class="text-2xl font-semibold">{{ $project->name }} <span class="text-base text-slate-400 dark:text-slate-500" translate="no">{{ $project->key }}</span></h1>
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{{ __('projects.owner') }}: {{ $project->owner?->name }}</p>
     </div>
     <div class="flex gap-2">
+        <a class="btn btn-secondary" href="{{ route('projects.overview', $project) }}">{{ __('pm.overview') }}</a>
         <a class="btn btn-secondary" href="{{ route('dev.board', $project) }}">{{ __('dev.board') }}</a>
         <a class="btn btn-secondary" href="{{ route('dev.backlog', $project) }}">{{ __('dev.backlog') }}</a>
         <a class="btn btn-secondary" href="{{ route('dev.list', $project) }}">{{ __('common.tickets') }}</a>
@@ -26,10 +27,16 @@
             <table class="table">
                 <thead><tr><th>{{ __('common.title') }}</th><th>{{ __('common.status') }}</th><th>{{ __('common.assignee') }}</th></tr></thead>
                 <tbody>@foreach($tickets as $ticket)
-                    <tr class="border-t border-slate-100">
-                        <td><a class="text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a></td>
+                    <tr class="border-t border-slate-100 dark:border-slate-800">
+                        <td><a class="text-brand-700 dark:text-brand-300 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a></td>
                         <td><x-status-badge :status="$ticket->status" /></td>
-                        <td>{{ $ticket->assignee?->name ?? '—' }}</td>
+                        <td>
+                            @if($ticket->assignee)
+                                <div class="flex items-center gap-2"><x-avatar :name="$ticket->assignee->name" /><span class="truncate">{{ $ticket->assignee->name }}</span></div>
+                            @else
+                                <span class="text-slate-400 dark:text-slate-500">{{ __('tickets.unassigned') }}</span>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach</tbody>
             </table>
@@ -69,7 +76,7 @@
         @can('manageCategories', $project)
         <div class="card">
             <h2 class="mb-3 font-semibold">{{ __('common.category') }}</h2>
-            <ul class="mb-4 space-y-1 text-sm">@foreach($project->categories as $category)<li>{{ $category->name }} <span class="text-slate-400">({{ $category->kind->value }})</span></li>@endforeach</ul>
+            <ul class="mb-4 space-y-1 text-sm">@foreach($project->categories as $category)<li>{{ $category->name }} <span class="text-slate-400 dark:text-slate-500">({{ $category->kind->value }})</span></li>@endforeach</ul>
             <form method="POST" action="{{ route('categories.store', $project) }}" class="space-y-2">
                 @csrf
                 <label class="sr-only" for="category-name">{{ __('common.category') }}</label>

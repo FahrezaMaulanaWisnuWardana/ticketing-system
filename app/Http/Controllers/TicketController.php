@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\AddAttachment;
+use App\Actions\AttachPending;
 use App\Actions\CreateTicket;
 use App\Actions\UpdateTicket;
 use App\Enums\TicketKind;
@@ -24,24 +25,11 @@ use Illuminate\Support\Facades\Gate;
 
 final class TicketController
 {
-    public function index(Request $request): View
+    public function index(): View
     {
-        $tickets = Ticket::query()
-            ->with('project:id,key,name', 'assignee:id,name', 'requester:id,name', 'category:id,name')
-            ->when($request->filled('status'), static fn ($query) => $query->where('status', (string) $request->input('status')))
-            ->when($request->filled('kind'), static fn ($query) => $query->where('kind', (string) $request->input('kind')))
-            ->when($request->filled('assignee_id'), static fn ($query) => $query->where('assignee_id', (int) $request->input('assignee_id')))
-            ->when($request->filled('q'), static function ($query) use ($request): void {
-                $term = '%'.mb_strtolower((string) $request->input('q')).'%';
-                $query->where(static fn ($inner) => $inner
-                    ->whereRaw('lower(title) like ?', [$term])
-                    ->orWhereRaw('lower(description) like ?', [$term]));
-            })
-            ->orderBy('rank')
-            ->paginate(25)
-            ->withQueryString();
-
-        return view('tickets.index', ['tickets' => $tickets]);
+        // The single global search (q) and all filters are handled by the
+        // TicketList component, which keeps them in the URL query string.
+        return view('tickets.index');
     }
 
     public function create(): View
@@ -52,7 +40,7 @@ final class TicketController
         return view('tickets.create', ['projects' => $projects]);
     }
 
-    public function store(StoreTicketRequest $request, CreateTicket $create): RedirectResponse
+    public function store(StoreTicketRequest $request, CreateTicket $create, AttachPending $attach): RedirectResponse
     {
         $user = $request->user();
         if (! $user instanceof User) {
@@ -65,6 +53,7 @@ final class TicketController
         foreach ($request->file('attachments', []) as $file) {
             app(AddAttachment::class)($ticket, $user, $file);
         }
+        $attach(AttachPending::parse($request->input('attachment_ids', '')), $ticket);
 
         AuditService::record('ticket.created', $ticket);
 
@@ -125,8 +114,8 @@ final class TicketController
         return redirect()->route('tickets.index')->with('status', __('tickets.deleted'));
     }
 
-    public function quickCreate(StoreTicketRequest $request, CreateTicket $create): RedirectResponse
+    public function quickCreate(StoreTicketRequest $request, CreateTicket $create, AttachPending $attach): RedirectResponse
     {
-        return $this->store($request, $create);
+        return $this->store($request, $create, $attach);
     }
 }

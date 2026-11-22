@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Models\Attachment;
 use App\Models\AuditLog;
 use App\Models\Ticket;
+use App\Services\AttachmentService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,6 +32,21 @@ final class PruneOldDataJob implements ShouldQueue
         $audits = AuditLog::where('created_at', '<', $auditCutoff)->delete();
         DB::table('failed_jobs')->where('failed_at', '<', now()->subWeek())->delete();
 
-        Log::info('Retention prune complete', ['tickets' => $tickets, 'audit_logs' => $audits]);
+        // Editor uploads that were never attached to a ticket are abandoned drafts.
+        $files = app(AttachmentService::class);
+        $pending = 0;
+        Attachment::whereNull('ticket_id')
+            ->where('created_at', '<', now()->subDay())
+            ->eachById(static function (Attachment $attachment) use ($files, &$pending): void {
+                $files->delete($attachment->disk, $attachment->path);
+                $attachment->forceDelete();
+                $pending++;
+            });
+
+        Log::info('Retention prune complete', [
+            'tickets' => $tickets,
+            'audit_logs' => $audits,
+            'pending_attachments' => $pending,
+        ]);
     }
 }

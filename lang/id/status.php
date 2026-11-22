@@ -9,7 +9,8 @@ return [
         'needs_reply' => 'Perlu balasan Anda',
         'resolved' => 'Selesai',
     ],
-    'new' => 'Baru', 'backlog' => 'Antrean', 'todo' => 'Akan dikerjakan', 'in_progress' => 'Dalam proses',
-    'in_review' => 'Dalam tinjauan', 'waiting_requester' => 'Menunggu peminta', 'done' => 'Selesai', 'closed' => 'Ditutup',
+    // Five canonical ticket statuses. Legacy keys remain for old data/board columns.
+    'new' => 'Baru', 'backlog' => 'Antrean', 'todo' => 'Akan dikerjakan', 'in_progress' => 'Dikerjakan',
+    'in_review' => 'Review', 'waiting_requester' => 'Menunggu', 'done' => 'Selesai', 'closed' => 'Ditutup',
     'active' => 'Aktif', 'on_hold' => 'Ditunda', 'completed' => 'Selesai', 'archived' => 'Diarsipkan',
 ];

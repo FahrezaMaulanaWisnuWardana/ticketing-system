@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Actions\AttachPending;
 use App\Actions\CreateTicket;
 use App\Enums\TicketKind;
 use App\Http\Requests\Rules;
@@ -11,7 +12,6 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -28,14 +28,28 @@ final class QuickCreate extends Component
 
     public string $description = '';
 
+    /** Ids of files uploaded inside the rich-text editor, comma separated. */
+    public string $quickAttachmentIds = '';
+
     #[On('open-quick-create')]
     public function show(): void
     {
         $this->open = true;
     }
 
-    public function create(CreateTicket $create): RedirectResponse
+    public function close(): void
     {
+        $this->open = false;
+        $this->resetValidation();
+        $this->reset(['projectId', 'title', 'description', 'quickAttachmentIds']);
+    }
+
+    public function create(CreateTicket $create, AttachPending $attach): void
+    {
+        $user = auth()->user();
+        if (! $user instanceof User) {
+            abort(401);
+        }
         Gate::authorize('create', Ticket::class);
         $this->validate([
             'projectId' => Rules::ticketCreate()['project_id'],
@@ -45,15 +59,10 @@ final class QuickCreate extends Component
         ]);
 
         $project = Project::findOrFail($this->projectId);
-        Gate::authorize('create', $project);
         if ($this->kind === TicketKind::Dev->value) {
             Gate::authorize('createDev', Ticket::class);
         }
 
-        $user = auth('web')->user();
-        if (! $user instanceof User) {
-            abort(401);
-        }
         $ticket = $create($user, $project, [
             'project_id' => $project->id,
             'kind' => $this->kind,
@@ -61,7 +70,8 @@ final class QuickCreate extends Component
             'description' => $this->description,
         ]);
 
-        return redirect()->route('tickets.show', $ticket);
+        $attach(AttachPending::parse($this->quickAttachmentIds), $ticket);
+        $this->redirectRoute('tickets.confirmation', $ticket);
     }
 
     public function render(): View

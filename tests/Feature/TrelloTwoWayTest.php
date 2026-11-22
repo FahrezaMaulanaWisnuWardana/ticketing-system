@@ -15,6 +15,7 @@ use App\Jobs\HandleTrelloWebhookJob;
 use App\Jobs\ReconcileTrelloJob;
 use App\Models\ExternalLink;
 use App\Models\IntegrationLog;
+use App\Models\StatusMapping;
 use App\Models\SyncConflict;
 use App\Models\Ticket;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,6 +52,8 @@ it('rejects invalid inbound transitions and flags the card', function (): void {
         'field_hashes' => [],
     ]);
 
+    // "Baru" is never a valid target from "Selesai" (reopen goes to "Dikerjakan").
+    StatusMapping::where('trello_list_id', 'list-todo')->update(['ticket_status' => 'new']);
     app(TrelloTwoWaySync::class)->applyInbound($link, ['status' => 'list-todo'], 'Alice');
 
     expect($ticket->refresh()->status)->toBe(TicketStatus::Done)

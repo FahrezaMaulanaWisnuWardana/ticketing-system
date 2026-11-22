@@ -15,13 +15,19 @@
             <table class="table">
                 <thead><tr><th>{{ __('common.title') }}</th><th>{{ __('common.priority') }}</th><th>{{ __('common.requester') }}</th><th>{{ __('common.created_at') }}</th><th>{{ __('common.actions') }}</th></tr></thead>
                 <tbody>@foreach($tickets as $ticket)
-                    <tr class="border-t border-slate-100 {{ $activeTicketId === $ticket->id ? 'bg-brand-50' : '' }}">
+                    <tr class="border-t border-slate-100 dark:border-slate-800 {{ $activeTicketId === $ticket->id ? 'bg-brand-50 dark:bg-brand-900/30' : '' }}">
                         <td>
-                            <a class="font-medium text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</a>
-                            <div class="text-xs text-slate-500">{{ $ticket->project?->key }}</div>
+                            <a class="font-medium text-brand-700 dark:text-brand-300 hover:underline" href="{{ route('tickets.show', $ticket) }}"><span translate="no">{{ $ticket->key }}</span> — {{ $ticket->title }}</a>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">{{ $ticket->project?->key }}</div>
                         </td>
-                        <td><x-badge :tone="$ticket->priority->value === 'urgent' ? 'rose' : 'slate'">{{ __('priorities.'.$ticket->priority->value) }}</x-badge></td>
-                        <td>{{ $ticket->requester?->name ?? '—' }}</td>
+                        <td><x-priority-badge :priority="$ticket->priority" /></td>
+                        <td>
+                            @if($ticket->requester)
+                                <div class="flex items-center gap-2"><x-avatar :name="$ticket->requester->name" /><span class="truncate">{{ $ticket->requester->name }}</span></div>
+                            @else
+                                <span class="text-slate-400 dark:text-slate-500">—</span>
+                            @endif
+                        </td>
                         <td>{{ App\Support\DateFormat::format($ticket->created_at) }}</td>
                         <td>
                             <button class="btn btn-secondary text-xs" wire:click="assign({{ $ticket->id }})">{{ __('common.assign_to_me') }}</button>
@@ -38,7 +44,7 @@
     <div class="card h-fit">
         <h2 class="mb-3 font-semibold">{{ __('common.reply') }}</h2>
         @if($activeTicketId === null)
-            <p class="text-sm text-slate-500">{{ __('queue.select_ticket') }}</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">{{ __('queue.select_ticket') }}</p>
         @else
             @if($canned->isNotEmpty())
                 <label class="mb-1 block text-sm font-medium" for="canned">{{ __('canned.title') }}</label>
@@ -48,9 +54,8 @@
                 </select>
             @endif
             <form wire:submit="send" class="space-y-3">
-                <label class="sr-only" for="queue-reply">{{ __('common.reply') }}</label>
-                <textarea id="queue-reply" wire:model="replyBody" rows="6" class="input w-full"></textarea>
-                @error('replyBody')<p class="text-xs text-rose-600" role="alert">{{ $message }}</p>@enderror
+                <x-rich-editor name="replyBody" id="queue-reply" wire="replyBody"
+                               attachment-wire="replyAttachmentIds" :placeholder="__('tickets.reply_placeholder')" />
                 <label class="sr-only" for="queue-files">{{ __('common.attachments') }}</label>
                 <input id="queue-files" type="file" wire:model="files" multiple class="input w-full text-xs">
                 <button class="btn btn-primary w-full" type="submit">{{ __('common.send') }}</button>

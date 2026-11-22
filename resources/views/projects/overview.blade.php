@@ -3,7 +3,7 @@
 @section('content')
 <div class="flex flex-wrap items-start justify-between gap-3">
     <div>
-        <h1 class="text-2xl font-semibold">{{ $project->name }} <span class="text-base text-slate-400">{{ $project->key }}</span></h1>
+        <h1 class="text-2xl font-semibold">{{ $project->name }} <span class="text-base text-slate-400 dark:text-slate-500">{{ $project->key }}</span></h1>
         <x-badge :tone="$metrics['health'] === 'late' ? 'rose' : ($metrics['health'] === 'at_risk' ? 'amber' : 'emerald')">
             {{ __('pm.health.'.$metrics['health']) }}
         </x-badge>
@@ -33,25 +33,27 @@
 <div class="mb-4"><a class="btn btn-secondary text-xs" href="{{ route('trello.settings', $project) }}">{{ __('trello.settings') }}</a></div>
 @endif
 
+@include('projects.partials.summary', ['project' => $project, 'summary' => $summary])
+
 <div class="mt-6 grid gap-6 lg:grid-cols-3">
     <div class="card">
         <h2 class="font-semibold">{{ __('pm.progress') }}</h2>
-        <div class="mt-3 h-3 w-full rounded-full bg-slate-100">
+        <div class="mt-3 h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800">
             <div class="h-3 rounded-full bg-brand-500" style="width: {{ $metrics['progress'] }}%"></div>
         </div>
-        <p class="mt-2 text-sm text-slate-600">{{ $metrics['progress'] }}% ({{ $metrics['done'] }}/{{ $metrics['total'] }})</p>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ $metrics['progress'] }}% ({{ $metrics['done'] }}/{{ $metrics['total'] }})</p>
     </div>
     <div class="card">
         <h2 class="font-semibold">{{ __('pm.milestones') }}</h2>
         <ul class="mt-3 space-y-2 text-sm">@forelse($milestones as $milestone)
-            <li class="flex justify-between"><span>{{ $milestone->name }}</span><span class="text-slate-500">{{ App\Support\DateFormat::date($milestone->due_date) }} · {{ $milestone->state }}</span></li>
-        @empty<li class="text-slate-500">—</li>@endforelse</ul>
+            <li class="flex justify-between"><span>{{ $milestone->name }}</span><span class="text-slate-500 dark:text-slate-400">{{ App\Support\DateFormat::date($milestone->due_date) }} · {{ $milestone->state }}</span></li>
+        @empty<li class="text-slate-500 dark:text-slate-400">—</li>@endforelse</ul>
     </div>
     <div class="card">
         <h2 class="font-semibold">{{ __('pm.workload') }}</h2>
         <ul class="mt-3 space-y-2 text-sm">@forelse($workload as $row)
-            <li class="flex justify-between"><span>{{ $row['name'] }}</span><span class="text-slate-500">{{ $row['count'] }} · {{ $row['points'] }} pts</span></li>
-        @empty<li class="text-slate-500">—</li>@endforelse</ul>
+            <li class="flex justify-between"><span>{{ $row['name'] }}</span><span class="text-slate-500 dark:text-slate-400">{{ $row['count'] }} · {{ $row['points'] }} pts</span></li>
+        @empty<li class="text-slate-500 dark:text-slate-400">—</li>@endforelse</ul>
     </div>
 </div>
 

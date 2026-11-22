@@ -2,6 +2,9 @@ import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    // Driven by <html data-theme="..."> so the choice can be persisted server-side
+    // and matched by resources/css/gantt.css (which uses the same attribute).
+    darkMode: ['selector', 'html[data-theme="dark"]'],
     content: [
         './resources/views/**/*.blade.php',
         './app/Livewire/**/*.php',

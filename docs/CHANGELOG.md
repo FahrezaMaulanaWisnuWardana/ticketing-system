@@ -1,5 +1,30 @@
 # Changelog
 
+## Rich-text editor with file handling
+
+- Replaced plain textareas for ticket descriptions and replies with a TipTap WYSIWYG editor (bold, italic, underline, strike, lists, quote, code, links).
+- Files can be pasted, dragged and dropped, or picked from the editor toolbar; images are embedded inline and other files become links.
+- Uploads reuse the private attachment pipeline and stay pending until the form saves, then are claimed by the new ticket/reply. Unclaimed uploads are pruned by the retention job.
+- CommonMark now passes HTML through and HTMLPurifier is the single sanitization boundary, so both legacy Markdown and new editor HTML render safely.
+- Split heavy libraries into on-demand chunks: the initial JS bundle dropped from ~630 kB to ~66 kB (200 kB → 25 kB gzip). TipTap loads only where an editor is rendered; Gantt, Sortable, Echo and Pusher load only on pages that use them.
+- Fixed the user factory not setting `theme`, which broke authenticated tests after the theme column was added.
+
+## Runtime UI/auth fixes
+
+- Removed duplicate Alpine instance that raced Livewire and left the quick-create modal permanently visible; modal is now Livewire-rendered and closes reliably.
+- Quick-create now uses `redirectRoute()` so created tickets land on the confirmation page.
+- Moved the 2FA challenge outside `auth` middleware, eliminating a login/challenge redirect loop.
+- Fixed Reverb host env for PHP broadcasting in Compose and switched dev sessions to the database driver to avoid CSRF 419s.
+
+- Dev Compose exposes Postgres on host port 5433 to avoid colliding with a host PostgreSQL on 5432; Navicat should use 5433.
+
+## Docker runtime fixes
+
+- Added `postgresql-dev` so `pdo_pgsql` compiles in Alpine images.
+- Skipped Composer scripts until `artisan` exists in the dev image.
+- Required non-empty `DB_PASSWORD` in Compose so app and Postgres cannot disagree silently.
+- Verified the full dev stack builds and all containers report healthy; `/login` and `/up` return 200.
+
 ## Docker packaging
 
 - Production Dockerfile is now truly multi-stage (Node asset build, Composer deps, non-root runtime with FPM tuning).

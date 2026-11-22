@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
-use App\Domain\StatusMapper;
 use App\Support\TicketSearch;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -29,7 +28,6 @@ final class GlobalSearch extends Component
 
         return view('livewire.global-search', [
             'results' => $results,
-            'mapper' => new StatusMapper,
         ]);
     }
 }

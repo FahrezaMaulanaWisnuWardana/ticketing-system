@@ -32,7 +32,7 @@ class User extends Authenticatable
     /** @var list<string> */
     protected $fillable = [
         'name', 'email', 'password', 'provider', 'google_id', 'role', 'is_active',
-        'timezone', 'locale', 'two_factor_secret', 'two_factor_recovery_codes',
+        'timezone', 'locale', 'theme', 'two_factor_secret', 'two_factor_recovery_codes',
         'two_factor_confirmed_at', 'notification_prefs', 'last_login_at', 'email_verified_at',
     ];
 

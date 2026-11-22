@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\AddComment;
+use App\Actions\AttachPending;
 use App\Http\Requests\AddCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
@@ -34,9 +35,10 @@ final class CommentController
         return back()->with('status', __('comments.created'));
     }
 
-    public function update(UpdateCommentRequest $request, Ticket $ticket, Comment $comment): RedirectResponse
+    public function update(UpdateCommentRequest $request, Ticket $ticket, Comment $comment, AttachPending $attach): RedirectResponse
     {
         $comment->update(['body' => (string) $request->input('body'), 'edited_at' => now()]);
+        $attach(AttachPending::parse($request->input('attachment_ids', '')), $ticket, $comment);
         AuditService::record('comment.updated', $comment);
 
         return back()->with('status', __('comments.updated'));

@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1460 1700" width="1460" height="1700" font-family="Inter, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1460" height="1700" fill="#ffffff"/>
+  <text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ticketing System — Application Flow</text>
+  <text x="40" y="88" font-size="15" fill="#64748b">Internal helpdesk + dev-work tracker + project manager · Laravel 13 / Livewire 3 / PostgreSQL / Reverb</text>
+
+  <!-- BAND A: SIGN IN -->
+  <rect x="40" y="110" width="1380" height="215" rx="16" fill="#eff6ff" stroke="#dbeafe"/>
+  <rect x="40" y="110" width="12" height="215" fill="#3b82f6"/>
+  <text x="72" y="142" font-size="16" font-weight="700" fill="#1d4ed8">1   SIGN IN</text>
+
+  <rect x="90" y="165" width="250" height="56" rx="12" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="215" y="199" text-anchor="middle" font-size="15" font-weight="600" fill="#1e3a8a">Email / Password</text>
+
+  <rect x="370" y="165" width="250" height="56" rx="12" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="495" y="199" text-anchor="middle" font-size="15" font-weight="600" fill="#1e3a8a">Google OAuth</text>
+
+  <rect x="650" y="165" width="280" height="56" rx="12" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="790" y="199" text-anchor="middle" font-size="15" font-weight="600" fill="#1e3a8a">Invite link → set password</text>
+
+  <rect x="430" y="250" width="260" height="56" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="560" y="284" text-anchor="middle" font-size="15" font-weight="700" fill="#1e3a8a">2FA challenge (TOTP)</text>
+
+  <text x="980" y="190" font-size="14" fill="#475569">• Inactive users blocked</text>
+  <text x="980" y="218" font-size="14" fill="#475569">• Verified email + domain allowlist</text>
+
+  <line x1="215" y1="221" x2="545" y2="250" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="495" y1="221" x2="555" y2="250" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="790" y1="221" x2="575" y2="250" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- BAND B: CREATE -->
+  <rect x="40" y="345" width="1380" height="460" rx="16" fill="#f0fdfa" stroke="#ccfbf1"/>
+  <rect x="40" y="345" width="12" height="460" fill="#0d9488"/>
+  <text x="72" y="377" font-size="16" font-weight="700" fill="#0f766e">2   CREATE A TICKET</text>
+
+  <rect x="520" y="400" width="420" height="54" rx="12" fill="#ffffff" stroke="#0d9488" stroke-width="2"/>
+  <text x="730" y="433" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">Home Dashboard (role-aware)</text>
+
+  <rect x="520" y="485" width="420" height="54" rx="12" fill="#ffffff" stroke="#0d9488" stroke-width="2"/>
+  <text x="730" y="518" text-anchor="middle" font-size="15" font-weight="600" fill="#115e59">+ Create Ticket  ·  Quick modal / full form</text>
+
+  <rect x="520" y="570" width="420" height="54" rx="12" fill="#ffffff" stroke="#0d9488" stroke-width="2"/>
+  <text x="730" y="603" text-anchor="middle" font-size="15" font-weight="600" fill="#115e59">Choose Project + Kind  ·  Request or Dev</text>
+
+  <rect x="520" y="655" width="420" height="54" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+  <text x="730" y="688" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">CreateTicket  ·  key • status • SLA</text>
+
+  <rect x="520" y="740" width="420" height="54" rx="12" fill="#ffffff" stroke="#0d9488" stroke-width="2"/>
+  <text x="730" y="773" text-anchor="middle" font-size="15" font-weight="600" fill="#115e59">Confirmation Page (SLA target shown)</text>
+
+  <line x1="560" y1="306" x2="700" y2="400" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="730" y1="454" x2="730" y2="485" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="730" y1="539" x2="730" y2="570" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="730" y1="624" x2="730" y2="655" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="730" y1="709" x2="730" y2="740" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- BAND C: PROCESSING -->
+  <rect x="40" y="825" width="670" height="560" rx="16" fill="#faf5ff" stroke="#ede9fe"/>
+  <rect x="40" y="825" width="12" height="560" fill="#7c3aed"/>
+  <text x="72" y="857" font-size="16" font-weight="700" fill="#6d28d9">3a  REQUEST FLOW (HELPDESK)</text>
+
+  <rect x="70" y="880" width="610" height="54" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="375" y="913" text-anchor="middle" font-size="15" font-weight="600" fill="#5b21b6">Agent Queue · unassigned requests</text>
+
+  <rect x="70" y="965" width="610" height="54" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="375" y="998" text-anchor="middle" font-size="15" font-weight="600" fill="#5b21b6">Self-assign (A)</text>
+
+  <rect x="70" y="1050" width="610" height="64" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="375" y="1085" text-anchor="middle" font-size="15" font-weight="600" fill="#5b21b6">
+    <tspan x="375">Conversation · public reply / internal note</tspan>
+    <tspan x="375" dy="20">change status &amp; priority</tspan>
+  </text>
+
+  <rect x="70" y="1140" width="610" height="64" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="375" y="1175" text-anchor="middle" font-size="15" font-weight="600" fill="#5b21b6">
+    <tspan x="375">Requester · My Requests</tspan>
+    <tspan x="375" dy="20">reply · reopen within 7 days</tspan>
+  </text>
+
+  <rect x="70" y="1240" width="610" height="64" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="375" y="1275" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">
+    <tspan x="375">Status lifecycle</tspan>
+    <tspan x="375" dy="20">New → In Progress → In Review → Done → Closed</tspan>
+  </text>
+
+  <line x1="730" y1="794" x2="375" y2="880" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="375" y1="934" x2="375" y2="965" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="375" y1="1019" x2="375" y2="1050" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="375" y1="1114" x2="375" y2="1140" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="375" y1="1204" x2="375" y2="1240" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <rect x="720" y="825" width="700" height="560" rx="16" fill="#fff1f2" stroke="#ffe4e6"/>
+  <rect x="720" y="825" width="12" height="560" fill="#e11d48"/>
+  <text x="752" y="857" font-size="16" font-weight="700" fill="#be123c">3b  DEV WORK FLOW</text>
+
+  <rect x="750" y="880" width="640" height="54" rx="12" fill="#ffffff" stroke="#e11d48" stroke-width="2"/>
+  <text x="1070" y="913" text-anchor="middle" font-size="15" font-weight="600" fill="#9f1239">Dev ticket</text>
+
+  <rect x="750" y="965" width="640" height="54" rx="12" fill="#ffffff" stroke="#e11d48" stroke-width="2"/>
+  <text x="1070" y="998" text-anchor="middle" font-size="15" font-weight="600" fill="#9f1239">Backlog</text>
+
+  <rect x="750" y="1050" width="640" height="64" rx="12" fill="#ffffff" stroke="#e11d48" stroke-width="2"/>
+  <text x="1070" y="1085" text-anchor="middle" font-size="15" font-weight="600" fill="#9f1239">
+    <tspan x="1070">Kanban Board (drag &amp; drop)</tspan>
+    <tspan x="1070" dy="20">Todo → In Progress → In Review → Done</tspan>
+  </text>
+
+  <rect x="750" y="1140" width="640" height="64" rx="12" fill="#ffffff" stroke="#e11d48" stroke-width="2"/>
+  <text x="1070" y="1175" text-anchor="middle" font-size="15" font-weight="600" fill="#9f1239">
+    <tspan x="1070">Sprints</tspan>
+    <tspan x="1070" dy="20">create · start · complete</tspan>
+  </text>
+
+  <rect x="750" y="1240" width="640" height="64" rx="12" fill="#ffe4e6" stroke="#e11d48" stroke-width="2"/>
+  <text x="1070" y="1275" text-anchor="middle" font-size="15" font-weight="700" fill="#9f1239">
+    <tspan x="1070">Reports</tspan>
+    <tspan x="1070" dy="20">overview · timeline · workload · CSV export</tspan>
+  </text>
+
+  <line x1="730" y1="794" x2="1070" y2="880" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1070" y1="934" x2="1070" y2="965" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1070" y1="1019" x2="1070" y2="1050" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1070" y1="1114" x2="1070" y2="1140" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1070" y1="1204" x2="1070" y2="1240" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- dashed: writes emit events -->
+  <line x1="375" y1="1304" x2="320" y2="1465" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+  <line x1="1070" y1="1304" x2="470" y2="1465" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+
+  <!-- BAND D: SYSTEM / ASYNC -->
+  <rect x="40" y="1405" width="1380" height="265" rx="16" fill="#fffbeb" stroke="#fef3c7"/>
+  <rect x="40" y="1405" width="12" height="265" fill="#d97706"/>
+  <text x="72" y="1437" font-size="16" font-weight="700" fill="#b45309">4   SYSTEM / ASYNC</text>
+
+  <rect x="90" y="1465" width="470" height="70" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="325" y="1498" text-anchor="middle" font-size="15" font-weight="700" fill="#92400e">
+    <tspan x="325">Domain Events</tspan>
+    <tspan x="325" dy="20" font-size="13" font-weight="500">Created · Commented · StatusChanged · Assigned · Reopened</tspan>
+  </text>
+
+  <rect x="90" y="1560" width="470" height="54" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="325" y="1593" text-anchor="middle" font-size="15" font-weight="700" fill="#92400e">Debounced Dispatcher (60s)</text>
+
+  <rect x="620" y="1460" width="190" height="50" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="715" y="1490" text-anchor="middle" font-size="14" font-weight="600" fill="#92400e">Email</text>
+
+  <rect x="620" y="1525" width="190" height="50" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="715" y="1555" text-anchor="middle" font-size="14" font-weight="600" fill="#92400e">Database</text>
+
+  <rect x="620" y="1590" width="190" height="50" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="715" y="1620" text-anchor="middle" font-size="14" font-weight="600" fill="#92400e">Realtime (Reverb)</text>
+
+  <rect x="870" y="1460" width="280" height="50" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="1010" y="1490" text-anchor="middle" font-size="14" font-weight="600" fill="#92400e">Trello · two-way sync</text>
+
+  <rect x="870" y="1525" width="280" height="50" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="1010" y="1555" text-anchor="middle" font-size="14" font-weight="600" fill="#92400e">Git webhooks → auto-close</text>
+
+  <text x="870" y="1608" font-size="13" fill="#78716c">App remains the source of truth</text>
+
+  <line x1="325" y1="1535" x2="325" y2="1560" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="560" y1="1587" x2="620" y2="1485" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="560" y1="1587" x2="620" y2="1550" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="560" y1="1587" x2="620" y2="1615" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+</svg>

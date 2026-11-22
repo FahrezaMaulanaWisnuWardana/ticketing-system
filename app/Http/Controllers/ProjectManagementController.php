@@ -12,19 +12,22 @@ use App\Models\Sprint;
 use App\Models\Ticket;
 use App\Services\AuditService;
 use App\Services\ProjectMetricsService;
+use App\Services\ProjectSummaryService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 final class ProjectManagementController extends Controller
 {
-    public function overview(Project $project): View
+    public function overview(Request $request, Project $project, ProjectSummaryService $summaryService): View
     {
         Gate::authorize('view', $project);
 
         return view('projects.overview', [
             'project' => $project->load('owner:id,name', 'members:id,name'),
             'metrics' => app(ProjectMetricsService::class)->for($project),
+            'summary' => $summaryService->for($project, (int) $request->query('days', 7)),
             'milestones' => $project->milestones()->orderBy('due_date')->get(),
             'epics' => $project->epics()->withCount('tickets')->get(),
             'workload' => $this->workloadData($project),

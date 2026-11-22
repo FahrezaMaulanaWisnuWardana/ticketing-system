@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Actions\AddComment;
+use App\Actions\AttachPending;
 use App\Actions\UpdateTicket;
 use App\Enums\Priority;
 use App\Http\Requests\Rules;
@@ -28,6 +29,9 @@ final class HelpdeskQueue extends Component
 
     public string $replyBody = '';
 
+    /** Ids of files uploaded inside the rich-text editor, comma separated. */
+    public string $replyAttachmentIds = '';
+
     public int $cannedReplyId = 0;
 
     /** @var array<int, mixed> */
@@ -50,7 +54,7 @@ final class HelpdeskQueue extends Component
         }
     }
 
-    public function send(AddComment $add): void
+    public function send(AddComment $add, AttachPending $attach): void
     {
         $ticket = Ticket::findOrFail($this->activeTicketId ?? 0);
         Gate::authorize('create', [Comment::class, $ticket]);
@@ -60,8 +64,9 @@ final class HelpdeskQueue extends Component
             'files' => $rules['attachments'],
         ]);
 
-        $add($ticket, $this->actingUser(), $this->replyBody, false, $this->files);
-        $this->reset(['replyBody', 'files', 'activeTicketId', 'cannedReplyId']);
+        $comment = $add($ticket, $this->actingUser(), $this->replyBody, false, $this->files);
+        $attach(AttachPending::parse($this->replyAttachmentIds), $ticket, $comment);
+        $this->reset(['replyBody', 'files', 'activeTicketId', 'cannedReplyId', 'replyAttachmentIds']);
         $this->dispatch('notify', message: __('comments.created'));
     }
 
@@ -79,7 +84,7 @@ final class HelpdeskQueue extends Component
             ->when($search !== '', static function ($query) use ($search): void {
                 $query->whereRaw("search @@ plainto_tsquery('simple', ?)", [$search]);
             })
-            ->orderByRaw("case priority when 'urgent' then 0 when 'high' then 1 when 'normal' then 2 else 3 end")
+            ->orderByRaw(Priority::SORT_DESC)
             ->orderBy('created_at')
             ->paginate(20);
 

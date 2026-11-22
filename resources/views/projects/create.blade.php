@@ -8,7 +8,7 @@
         <x-input name="name" :label="__('projects.name')" required />
         <x-input name="key" :label="__('projects.key')" required maxlength="10" />
         <div class="space-y-1">
-            <label for="template" class="block text-sm font-medium text-slate-700">{{ __('projects.template') }}</label>
+            <label for="template" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('projects.template') }}</label>
             <select id="template" name="template" class="input w-full">
                 <option value="dev">{{ __('projects.dev') }}</option>
                 <option value="helpdesk">{{ __('projects.helpdesk') }}</option>
@@ -16,7 +16,7 @@
             </select>
         </div>
         <div class="space-y-1">
-            <label for="description" class="block text-sm font-medium text-slate-700">{{ __('common.description') }}</label>
+            <label for="description" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('common.description') }}</label>
             <textarea id="description" name="description" rows="3" class="input w-full">{{ old('description') }}</textarea>
         </div>
         @if(config('trello.enabled'))

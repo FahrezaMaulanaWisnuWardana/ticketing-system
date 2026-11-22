@@ -21,7 +21,7 @@ it('verifies RFC 6238 codes and rejects wrong ones', function (): void {
         ->and($service->generateRecoveryCodes())->toHaveCount(8);
 });
 
-it('strips raw html and unsafe links from markdown', function (): void {
+it('strips unsafe html and links while rendering markdown', function (): void {
     $service = new MarkdownService;
     $html = $service->render('# Hello <script>alert(1)</script> [x](javascript:alert(1)) [ok](https://example.com)');
 
@@ -30,6 +30,19 @@ it('strips raw html and unsafe links from markdown', function (): void {
         ->and($html)->toContain('noopener')
         ->and($html)->toContain('noreferrer')
         ->and($html)->toContain('nofollow');
+});
+
+it('keeps rich-text editor markup but sanitizes it', function (): void {
+    $service = new MarkdownService;
+    $html = $service->render('<p>Hello <strong>team</strong> <a href="https://example.com" onclick="alert(1)">link</a></p>'
+        .'<img src="https://example.com/a.png" alt="a">'
+        .'<script>alert(1)</script>');
+
+    expect($html)->toContain('<strong>team</strong>')
+        ->and($html)->toContain('<a href="https://example.com"')
+        ->and($html)->toContain('<img src="https://example.com/a.png"')
+        ->and($html)->not->toContain('onclick')
+        ->and($html)->not->toContain('<script');
 });
 
 it('keeps audit logs and activities immutable', function (): void {

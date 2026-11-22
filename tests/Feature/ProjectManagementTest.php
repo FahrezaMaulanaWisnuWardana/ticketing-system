@@ -67,6 +67,48 @@ it('caches project metrics and invalidates them when a ticket changes', function
     expect($service->for($project)['health'])->toBe('late');
 });
 
+it('summarizes project work and recent activity for the selected period', function (): void {
+    $lead = User::factory()->agent()->create(['theme' => 'light']);
+    $project = Project::factory()->create(['owner_id' => $lead->id]);
+    $project->members()->attach($lead->id, ['role' => ProjectRole::Lead->value]);
+    $this->actingAs($lead);
+
+    $done = Ticket::factory()->create([
+        'project_id' => $project->id, 'reporter_id' => $lead->id, 'requester_id' => $lead->id,
+        'status' => TicketStatus::Done, 'title' => 'Finished this week',
+    ]);
+    $done->update(['resolved_at' => now()->subDay()]);
+    Ticket::factory()->create([
+        'project_id' => $project->id, 'reporter_id' => $lead->id, 'requester_id' => $lead->id,
+        'status' => TicketStatus::Closed,
+    ])->update(['resolved_at' => now()->subDays(15)]);
+    Ticket::factory()->create([
+        'project_id' => $project->id, 'reporter_id' => $lead->id, 'requester_id' => $lead->id,
+        'status' => TicketStatus::Todo, 'due_date' => now()->addDays(3),
+    ]);
+
+    $response = $this->get(route('projects.overview', ['project' => $project, 'days' => 7]))
+        ->assertOk()
+        ->assertSee(__('pm.summary.title'))
+        ->assertSee($done->key);
+
+    $summary = $response->viewData('summary');
+    expect($summary['days'])->toBe(7)
+        ->and($summary['completed'])->toBe(1)
+        ->and($summary['created'])->toBe(3)
+        ->and($summary['due_soon'])->toBe(1)
+        ->and($summary['total'])->toBe(3)
+        // Done + Closed and Todo + InProgress are now grouped into two buckets.
+        ->and($summary['statuses'])->toHaveCount(2)
+        ->and($summary['activities'])->not->toBeEmpty();
+
+    $wider = $this->get(route('projects.overview', ['project' => $project, 'days' => 30]))
+        ->assertOk()
+        ->viewData('summary');
+    expect($wider['days'])->toBe(30)
+        ->and($wider['completed'])->toBe(2);
+});
+
 it('renders overview, epics, timeline and workload pages for project members', function (): void {
     $lead = User::factory()->agent()->create();
     $project = Project::factory()->create(['owner_id' => $lead->id]);

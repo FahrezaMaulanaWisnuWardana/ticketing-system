@@ -21,6 +21,8 @@ docker compose exec app php artisan db:seed   # local/staging only: demo data
 
 Open <http://localhost:8000>. Demo accounts (local only): `admin@example.com`, `lead@example.com`, `agent1@example.com`, `user1@example.com` — password `password123`.
 
+To connect Navicat to the Docker Postgres: host `127.0.0.1`, **port `5433`** (port `5432` is used by the host's own PostgreSQL), database/user/password from `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` in `.env` (here: `ticketing` / `reza` / `secret`).
+
 The dev stack starts Postgres 16, Redis 7, PHP-FPM, nginx, Horizon, the scheduler, Reverb and Mailpit (web UI at <http://localhost:8025>). Optional profiles: `docker compose --profile vite up -d` (Vite dev server on 5173) and `--profile minio` (object storage).
 
 Google login requires `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `ALLOWED_EMAIL_DOMAINS` in `.env`.
@@ -44,5 +46,6 @@ php artisan migrate:rollback --force   # verify reversibility
 - [Runbook](docs/RUNBOOK.md)
 - [Admin guide](docs/ADMIN-GUIDE.md)
 - [User guide](docs/USER-GUIDE.md)
+- [Panduan penggunaan — 1 halaman, visual (Bahasa Indonesia)](docs/PANDUAN-PENGGUNAAN.html) — juga tersedia di aplikasi lewat sidebar **Panduan penggunaan** (`/panduan`)
 - [Load test](docs/LOADTEST.md)
 - [Changelog](docs/CHANGELOG.md)

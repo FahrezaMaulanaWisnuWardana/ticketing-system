@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Actions\AddComment;
+use App\Actions\AttachPending;
 use App\Http\Requests\Rules;
 use App\Models\Ticket;
 use App\Models\User;
@@ -22,6 +23,9 @@ final class RequesterConversation extends Component
 
     public string $replyBody = '';
 
+    /** Ids of files uploaded inside the rich-text editor, comma separated. */
+    public string $replyAttachmentIds = '';
+
     /** @var array<int, mixed> */
     public array $files = [];
 
@@ -30,7 +34,7 @@ final class RequesterConversation extends Component
         $this->ticketId = $ticket;
     }
 
-    public function reply(AddComment $add): void
+    public function reply(AddComment $add, AttachPending $attach): void
     {
         $ticket = $this->ticket();
         Gate::authorize('comment', $ticket);
@@ -40,8 +44,9 @@ final class RequesterConversation extends Component
             'files' => $rules['attachments'],
         ]);
 
-        $add($ticket, $this->actingUser(), $this->replyBody, false, $this->files);
-        $this->reset(['replyBody', 'files']);
+        $comment = $add($ticket, $this->actingUser(), $this->replyBody, false, $this->files);
+        $attach(AttachPending::parse($this->replyAttachmentIds), $ticket, $comment);
+        $this->reset(['replyBody', 'files', 'replyAttachmentIds']);
         $this->dispatch('notify', message: __('comments.created'));
     }
 

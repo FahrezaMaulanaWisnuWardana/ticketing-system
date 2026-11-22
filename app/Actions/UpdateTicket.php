@@ -38,7 +38,7 @@ final class UpdateTicket
 
             if ($to->isFinal() && $ticket->resolved_at === null) {
                 $update['resolved_at'] = now();
-                $update['closed_at'] = $to === TicketStatus::Closed ? now() : null;
+                $update['closed_at'] = $to->group() === TicketStatus::Done ? now() : null;
             }
             if (! $to->isFinal()) {
                 $update['resolved_at'] = null;

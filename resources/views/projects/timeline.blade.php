@@ -9,13 +9,13 @@
 @push('scripts')
 <script @isset($cspNonce) nonce="{{ $cspNonce }}" @endisset>
     document.addEventListener('DOMContentLoaded', function () {
-        if (window.Gantt) {
-            new window.Gantt(document.getElementById('gantt'), @json($tasks), {
+        window.loadGantt?.().then(function (Gantt) {
+            new Gantt(document.getElementById('gantt'), @json($tasks), {
                 view_mode: 'Week',
                 bar_height: 24,
                 on_click: function () { window.location.href = '{{ route('projects.epics', $project) }}'; },
             });
-        }
+        });
     });
 </script>
 @endpush

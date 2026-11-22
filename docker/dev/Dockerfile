@@ -1,7 +1,7 @@
 FROM php:8.3-fpm-alpine
 
 RUN apk add --no-cache \
-        bash git curl unzip postgresql-client icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev \
+        bash git curl unzip postgresql-client postgresql-dev icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev \
         $PHPIZE_DEPS \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" pdo_pgsql intl gd zip bcmath opcache pcntl \
@@ -13,7 +13,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --no-progress
+RUN composer install --no-interaction --prefer-dist --no-progress --no-scripts
 
 COPY . .
 RUN php artisan package:discover --ansi

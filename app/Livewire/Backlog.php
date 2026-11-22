@@ -44,7 +44,7 @@ final class Backlog extends Component
             ->with('project:id,key,name', 'assignee:id,name')
             ->where('project_id', $this->projectId)
             ->whereNull('sprint_id')
-            ->whereIn('status', [TicketStatus::Backlog, TicketStatus::Todo])
+            ->whereIn('status', TicketStatus::InProgress->groupValues())
             ->orderBy('rank')
             ->get();
 

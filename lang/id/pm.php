@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'overview' => 'Ringkasan',
     'epics' => 'Epic', 'milestones' => 'Tonggak', 'timeline' => 'Linimasa',
     'workload' => 'Beban kerja', 'progress' => 'Progres', 'points' => 'Poin',
     'new_epic' => 'Epic baru', 'new_milestone' => 'Tonggak baru',
@@ -11,4 +12,34 @@ return [
     'create_dev_ticket' => 'Buat tiket dev', 'dev_ticket_created' => 'Tiket pengembangan dibuat.',
     'only_requests' => 'Hanya permintaan helpdesk yang dapat ditautkan ke pekerjaan dev.',
     'dev_completed_note' => 'Tiket pengembangan terkait :key telah selesai dan siap diselesaikan.',
+    'summary' => [
+        'title' => 'Ringkasan proyek',
+        'period' => 'Periode waktu',
+        'days' => ':days hari',
+        'completed' => 'Selesai',
+        'updated' => 'Diperbarui',
+        'created' => 'Dibuat',
+        'due_soon' => 'Jatuh tempo segera',
+        'last_days' => 'dalam :days hari terakhir',
+        'next_days' => 'dalam :days hari ke depan',
+        'status_overview' => 'Ringkasan status',
+        'status_hint' => 'Lihat sekilas status semua pekerjaan.',
+        'view_all' => 'Lihat semua pekerjaan',
+        'total_work_items' => 'Total pekerjaan',
+        'recent_activity' => 'Aktivitas terbaru',
+        'activity_hint' => 'Pantau hal terbaru yang terjadi di proyek ini.',
+        'no_activity' => 'Belum ada aktivitas terbaru.',
+        'someone' => 'Seseorang',
+        'comment' => 'Komentar',
+        'event' => [
+            'created' => 'membuat',
+            'commented' => 'berkomentar pada',
+            'status_changed' => 'mengubah status',
+            'field_changed' => 'memperbarui',
+            'imported_from_trello' => 'mengimpor dari Trello',
+            'imported_comment' => 'mengimpor komentar pada',
+            'trello_inbound' => 'menyinkronkan dari Trello',
+            'git.merged' => 'menautkan merge ke',
+        ],
+    ],
 ];

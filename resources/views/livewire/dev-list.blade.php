@@ -3,7 +3,7 @@
         <label class="sr-only" for="dev-status">{{ __('common.status') }}</label>
         <select id="dev-status" wire:model.live="status" class="input">
             <option value="">{{ __('common.all') }}</option>
-            @foreach(App\Enums\TicketStatus::cases() as $case)<option value="{{ $case->value }}">{{ __('status.'.$case->value) }}</option>@endforeach
+            @foreach($statuses as $case)<option value="{{ $case->value }}">{{ __($case->labelKey()) }}</option>@endforeach
         </select>
         <label class="sr-only" for="dev-assignee">{{ __('common.assignee') }}</label>
         <select id="dev-assignee" wire:model.live="assignee" class="input">
@@ -25,11 +25,17 @@
         <table class="table">
             <thead><tr><th>{{ __('common.title') }}</th><th>{{ __('common.status') }}</th><th>{{ __('common.priority') }}</th><th>{{ __('common.assignee') }}</th><th>{{ __('dev.estimate') }}</th></tr></thead>
             <tbody>@foreach($tickets as $ticket)
-                <tr class="border-t border-slate-100">
-                    <td><a class="text-brand-700 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a></td>
+                <tr class="border-t border-slate-100 dark:border-slate-800">
+                    <td><a class="text-brand-700 dark:text-brand-300 hover:underline" href="{{ route('tickets.show', $ticket) }}">{{ $ticket->key }} — {{ $ticket->title }}</a></td>
                     <td><x-status-badge :status="$ticket->status" /></td>
-                    <td>{{ __('priorities.'.$ticket->priority->value) }}</td>
-                    <td>{{ $ticket->assignee?->name ?? '—' }}</td>
+                    <td><x-priority-badge :priority="$ticket->priority" /></td>
+                    <td>
+                        @if($ticket->assignee)
+                            <div class="flex items-center gap-2"><x-avatar :name="$ticket->assignee->name" /><span class="truncate">{{ $ticket->assignee->name }}</span></div>
+                        @else
+                            <span class="text-slate-400 dark:text-slate-500">{{ __('tickets.unassigned') }}</span>
+                        @endif
+                    </td>
                     <td>{{ $ticket->estimate ?? '—' }}</td>
                 </tr>
             @endforeach</tbody>

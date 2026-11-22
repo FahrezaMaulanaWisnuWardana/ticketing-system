@@ -17,6 +17,8 @@ use App\Http\Controllers\CannedReplyController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DevController;
+use App\Http\Controllers\DocumentationController;
+use App\Http\Controllers\EditorUploadController;
 use App\Http\Controllers\GitWebhookController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\HomeController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\ProjectManagementController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequesterController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TrelloController;
 use App\Http\Controllers\TrelloWebhookController;
@@ -46,8 +49,17 @@ Route::middleware('guest')->group(static function (): void {
     Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
 });
 
+// Available to guests too, so the sign-in page can use the same theme.
+Route::post('/theme', [ThemeController::class, 'switch'])->name('theme.switch');
+
 Route::get('/invitations/{user}/edit', [InvitationController::class, 'edit'])->middleware('signed')->name('invitations.edit');
 Route::post('/invitations/{user}', [InvitationController::class, 'update'])->middleware('signed')->name('invitations.update');
+
+// The challenge must be reachable before Auth::login() completes (the pending
+// user id lives in the session only). Keeping it inside `auth` caused a
+// login ↔ challenge redirect loop.
+Route::get('/2fa/challenge', [TwoFactorController::class, 'showChallenge'])->name('2fa.challenge');
+Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
 Route::middleware('auth')->group(static function (): void {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -55,12 +67,11 @@ Route::middleware('auth')->group(static function (): void {
 
     Route::get('/2fa/setup', [TwoFactorController::class, 'showSetup'])->name('2fa.setup');
     Route::post('/2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa.enable');
-    Route::get('/2fa/challenge', [TwoFactorController::class, 'showChallenge'])->name('2fa.challenge');
-    Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
     Route::get('/2fa/recovery', [TwoFactorController::class, 'showRecovery'])->name('2fa.recovery');
     Route::post('/2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa.disable');
 
     Route::get('/health', HealthController::class)->name('health');
+    Route::get('/panduan', DocumentationController::class)->name('panduan');
     Route::get('/projects/{project:key}/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/projects/{project:key}/reports/export', [ReportController::class, 'export'])->name('reports.export');
 
@@ -122,6 +133,7 @@ Route::middleware('auth')->group(static function (): void {
     Route::delete('/t/{ticket}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     Route::post('/t/{ticket}/attachments', [AttachmentController::class, 'store'])->name('attachments.store');
+    Route::post('/editor/uploads', [EditorUploadController::class, 'store'])->name('editor.uploads.store');
     Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachments.show');
     Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 

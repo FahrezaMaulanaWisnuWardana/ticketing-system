@@ -30,6 +30,7 @@ final class UserFactory extends Factory
             'is_active' => true,
             'timezone' => 'Asia/Jakarta',
             'locale' => 'id',
+            'theme' => 'light',
             'remember_token' => Str::random(10),
         ];
     }

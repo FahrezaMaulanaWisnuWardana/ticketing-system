@@ -9,7 +9,7 @@
     </ul>
     @if($run->errors)
         <h2 class="mt-4 font-semibold">{{ __('trello.errors') }}</h2>
-        <ul class="text-sm text-rose-700">@foreach($run->errors as $error)<li>{{ $error['card'] ?? '' }} — {{ $error['message'] ?? '' }}</li>@endforeach</ul>
+        <ul class="text-sm text-rose-700 dark:text-rose-300">@foreach($run->errors as $error)<li>{{ $error['card'] ?? '' }} — {{ $error['message'] ?? '' }}</li>@endforeach</ul>
     @endif
     <a class="btn btn-secondary mt-5" href="{{ route('trello.settings', $run->connection->project_id) }}">{{ __('common.back') }}</a>
 </div>

@@ -8,6 +8,9 @@ services:
       CSP_MODE: enforce
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: ${REDIS_HOST:-redis}
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - storage:/var/www/storage
       - bootstrap_cache:/var/www/bootstrap/cache
@@ -64,6 +67,9 @@ services:
       APP_ENV: production
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: ${REDIS_HOST:-redis}
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - storage:/var/www/storage
       - bootstrap_cache:/var/www/bootstrap/cache
@@ -93,6 +99,9 @@ services:
       APP_ENV: production
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: ${REDIS_HOST:-redis}
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - storage:/var/www/storage
       - bootstrap_cache:/var/www/bootstrap/cache
@@ -122,6 +131,9 @@ services:
       APP_ENV: production
       DB_HOST: ${DB_HOST:-postgres}
       REDIS_HOST: ${REDIS_HOST:-redis}
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - storage:/var/www/storage
       - bootstrap_cache:/var/www/bootstrap/cache

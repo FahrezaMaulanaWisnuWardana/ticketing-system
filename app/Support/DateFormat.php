@@ -30,6 +30,24 @@ final class DateFormat
         return $formatted === false ? $date->toDateTimeString() : $formatted;
     }
 
+    /** Full local date and time, used for hover titles/tooltips. */
+    public static function dateTime(?CarbonInterface $date): string
+    {
+        if ($date === null) {
+            return '—';
+        }
+
+        $formatter = new IntlDateFormatter(
+            app()->getLocale(),
+            IntlDateFormatter::MEDIUM,
+            IntlDateFormatter::SHORT,
+            (string) config('ticketing.display_timezone'),
+        );
+        $formatted = $formatter->format($date->getTimestamp());
+
+        return $formatted === false ? $date->toDateTimeString() : $formatted;
+    }
+
     public static function date(?CarbonInterface $date): string
     {
         if ($date === null) {

@@ -17,17 +17,18 @@ it('maps internal statuses to requester friendly labels', function (): void {
 
 it('uses the correct initial status per ticket kind', function (): void {
     expect(TicketWorkflow::initialStatus(TicketKind::Request))->toBe(TicketStatus::New)
-        ->and(TicketWorkflow::initialStatus(TicketKind::Dev))->toBe(TicketStatus::Backlog);
+        ->and(TicketWorkflow::initialStatus(TicketKind::Dev))->toBe(TicketStatus::InProgress);
 });
 
 it('enforces allowed transitions only', function (): void {
     expect(TicketWorkflow::canTransition(TicketStatus::New, TicketStatus::InProgress))->toBeTrue()
-        ->and(TicketWorkflow::canTransition(TicketStatus::Closed, TicketStatus::InProgress))->toBeFalse()
-        ->and(TicketWorkflow::canTransition(TicketStatus::InReview, TicketStatus::Done))->toBeTrue();
+        ->and(TicketWorkflow::canTransition(TicketStatus::Done, TicketStatus::New))->toBeFalse()
+        ->and(TicketWorkflow::canTransition(TicketStatus::InReview, TicketStatus::Done))->toBeTrue()
+        ->and(TicketWorkflow::canTransition(TicketStatus::Backlog, TicketStatus::InProgress))->toBeTrue();
 });
 
 it('rejects invalid transitions', function (): void {
-    TicketWorkflow::assertTransition(TicketStatus::Closed, TicketStatus::New);
+    TicketWorkflow::assertTransition(TicketStatus::Done, TicketStatus::New);
 })->throws(InvalidArgumentException::class);
 
 it('generates ordered ranks and keeps them between neighbours', function (): void {

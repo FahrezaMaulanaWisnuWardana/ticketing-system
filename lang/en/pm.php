@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'overview' => 'Overview',
     'epics' => 'Epics', 'milestones' => 'Milestones', 'timeline' => 'Timeline',
     'workload' => 'Workload', 'progress' => 'Progress', 'points' => 'Points',
     'new_epic' => 'New epic', 'new_milestone' => 'New milestone',
@@ -11,4 +12,34 @@ return [
     'create_dev_ticket' => 'Create dev ticket', 'dev_ticket_created' => 'Development ticket created.',
     'only_requests' => 'Only helpdesk requests can be linked to dev work.',
     'dev_completed_note' => 'Linked development ticket :key is done and ready to resolve.',
+    'summary' => [
+        'title' => 'Project summary',
+        'period' => 'Time period',
+        'days' => ':days days',
+        'completed' => 'Completed',
+        'updated' => 'Updated',
+        'created' => 'Created',
+        'due_soon' => 'Due soon',
+        'last_days' => 'in the last :days days',
+        'next_days' => 'in the next :days days',
+        'status_overview' => 'Status overview',
+        'status_hint' => 'Get a snapshot of the status of all work items.',
+        'view_all' => 'View all work items',
+        'total_work_items' => 'Total work items',
+        'recent_activity' => 'Recent activity',
+        'activity_hint' => "Stay up to date with what's happening across the project.",
+        'no_activity' => 'No recent activity yet.',
+        'someone' => 'Someone',
+        'comment' => 'Comment',
+        'event' => [
+            'created' => 'created',
+            'commented' => 'commented on',
+            'status_changed' => 'changed the status of',
+            'field_changed' => 'updated',
+            'imported_from_trello' => 'imported from Trello',
+            'imported_comment' => 'imported a comment on',
+            'trello_inbound' => 'synced from Trello',
+            'git.merged' => 'linked a merge to',
+        ],
+    ],
 ];

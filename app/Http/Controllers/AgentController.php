@@ -11,7 +11,7 @@ final class AgentController extends Controller
 {
     public function queue(Request $request): View
     {
-        if (! $request->user()?->isAgent()) {
+        if (! $request->user()?->isAgent() && ! $request->user()?->isAdmin()) {
             abort(403);
         }
 

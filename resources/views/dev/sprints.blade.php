@@ -9,7 +9,7 @@
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div>
                         <h2 class="font-semibold">{{ $sprint->name }}</h2>
-                        <p class="text-xs text-slate-500">{{ App\Support\DateFormat::date($sprint->start_date) }} – {{ App\Support\DateFormat::date($sprint->end_date) }} · {{ $sprint->state }}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ App\Support\DateFormat::date($sprint->start_date) }} – {{ App\Support\DateFormat::date($sprint->end_date) }} · {{ $sprint->state }}</p>
                     </div>
                     @can('manageSprint', $sprint)
                         <div class="flex gap-2">
@@ -25,7 +25,7 @@
                     @endcan
                 </div>
                 <p class="mt-2 text-sm">{{ $sprint->goal }}</p>
-                <p class="mt-2 text-xs text-slate-500">{{ __('dev.remaining_points') }}: {{ $sprint->remainingPoints() }}</p>
+                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('dev.remaining_points') }}: {{ $sprint->remainingPoints() }}</p>
             </div>
         @endforeach
     </div>

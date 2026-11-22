@@ -10,29 +10,34 @@ use InvalidArgumentException;
 
 final class TicketWorkflow
 {
-    /** @var array<string, array<int, TicketStatus>> */
+    /**
+     * Transitions between the five canonical statuses. Legacy values are
+     * normalised via group() so old data keeps behaving the same way.
+     *
+     * @var array<string, array<int, TicketStatus>>
+     */
     private const TRANSITIONS = [
-        'new' => [TicketStatus::Backlog, TicketStatus::Todo, TicketStatus::InProgress, TicketStatus::WaitingRequester, TicketStatus::Done],
-        'backlog' => [TicketStatus::Todo, TicketStatus::InProgress, TicketStatus::Done],
-        'todo' => [TicketStatus::InProgress, TicketStatus::Backlog, TicketStatus::Done],
-        'in_progress' => [TicketStatus::InReview, TicketStatus::WaitingRequester, TicketStatus::Todo, TicketStatus::Done],
+        'new' => [TicketStatus::InProgress, TicketStatus::WaitingRequester, TicketStatus::Done],
+        'in_progress' => [TicketStatus::InReview, TicketStatus::WaitingRequester, TicketStatus::Done],
         'in_review' => [TicketStatus::InProgress, TicketStatus::Done, TicketStatus::WaitingRequester],
         'waiting_requester' => [TicketStatus::InProgress, TicketStatus::Done],
-        'done' => [TicketStatus::InProgress, TicketStatus::Closed],
-        'closed' => [],
+        'done' => [TicketStatus::InProgress],
     ];
 
     public static function initialStatus(TicketKind $kind): TicketStatus
     {
         return match ($kind) {
             TicketKind::Request => TicketStatus::New,
-            TicketKind::Dev => TicketStatus::Backlog,
+            TicketKind::Dev => TicketStatus::InProgress,
         };
     }
 
     public static function canTransition(TicketStatus $from, TicketStatus $to): bool
     {
-        return $from === $to || in_array($to, self::TRANSITIONS[$from->value], true);
+        $fromGroup = $from->group();
+        $toGroup = $to->group();
+
+        return $fromGroup === $toGroup || in_array($toGroup, self::TRANSITIONS[$fromGroup->value], true);
     }
 
     public static function assertTransition(TicketStatus $from, TicketStatus $to): void
@@ -45,6 +50,6 @@ final class TicketWorkflow
     /** @return array<int, TicketStatus> */
     public static function allowedNext(TicketStatus $from): array
     {
-        return self::TRANSITIONS[$from->value];
+        return self::TRANSITIONS[$from->group()->value];
     }
 }

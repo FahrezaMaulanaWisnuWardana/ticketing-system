@@ -19,7 +19,10 @@
 <div class="mt-6 grid gap-4 md:grid-cols-2">
     <div class="card">
         <h2 class="mb-3 font-semibold">{{ __('reports.by_status') }}</h2>
-        <ul class="text-sm">@foreach($summary['status'] as $status => $total)<li class="flex justify-between"><span>{{ $status }}</span><span>{{ $total }}</span></li>@endforeach</ul>
+        <ul class="text-sm">@foreach($summary['status'] as $status => $total)
+            @php $case = App\Enums\TicketStatus::tryFrom((string) $status)?->group(); @endphp
+            <li class="flex justify-between"><span>{{ $case ? __($case->labelKey()) : $status }}</span><span>{{ $total }}</span></li>
+        @endforeach</ul>
     </div>
     <div class="card">
         <h2 class="mb-3 font-semibold">{{ __('reports.by_assignee') }}</h2>

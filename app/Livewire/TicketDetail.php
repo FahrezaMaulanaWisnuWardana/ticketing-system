@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Actions\AddComment;
+use App\Actions\AttachPending;
 use App\Actions\UpdateTicket;
 use App\Http\Requests\Rules;
 use App\Models\Comment;
@@ -38,6 +39,11 @@ final class TicketDetail extends Component
 
     public string $newComment = '';
 
+    /** Ids of files uploaded inside the rich-text editors, comma separated. */
+    public string $descriptionAttachmentIds = '';
+
+    public string $commentAttachmentIds = '';
+
     public bool $isInternal = false;
 
     /** @var array<int, mixed> */
@@ -49,7 +55,7 @@ final class TicketDetail extends Component
         $this->refreshFields();
     }
 
-    public function saveDetails(UpdateTicket $update): void
+    public function saveDetails(UpdateTicket $update, AttachPending $attach): void
     {
         $ticket = $this->ticket();
         Gate::authorize('update', $ticket);
@@ -66,6 +72,8 @@ final class TicketDetail extends Component
             'priority' => $this->priority,
             'assignee_id' => $this->assigneeId,
         ]);
+        $attach(AttachPending::parse($this->descriptionAttachmentIds), $ticket);
+        $this->descriptionAttachmentIds = '';
         $this->dispatch('notify', message: __('tickets.updated'));
     }
 
@@ -87,7 +95,7 @@ final class TicketDetail extends Component
         $this->dispatch('notify', message: __('tickets.assigned_to_you'));
     }
 
-    public function addComment(AddComment $add): void
+    public function addComment(AddComment $add, AttachPending $attach): void
     {
         $ticket = $this->ticket();
         Gate::authorize('create', [Comment::class, $ticket]);
@@ -102,8 +110,9 @@ final class TicketDetail extends Component
             Gate::authorize('viewInternalNotes', $ticket);
         }
 
-        $add($ticket, $this->actingUser(), $this->newComment, $this->isInternal, $this->files);
-        $this->reset(['newComment', 'isInternal', 'files']);
+        $comment = $add($ticket, $this->actingUser(), $this->newComment, $this->isInternal, $this->files);
+        $attach(AttachPending::parse($this->commentAttachmentIds), $ticket, $comment);
+        $this->reset(['newComment', 'isInternal', 'files', 'commentAttachmentIds']);
         $this->dispatch('notify', message: __('comments.created'));
     }
 

@@ -13,9 +13,9 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
                 <h2 class="font-semibold">{{ $connection->trello_board_name ?? $connection->trello_board_id }}</h2>
-                <p class="text-sm text-slate-600">{{ __('trello.status') }}: {{ $connection->status->value }} · {{ __('trello.mode') }}: {{ $connection->mode->value }} · {{ __('trello.token') }}: ••••{{ $connection->lastFour() }}</p>
-                <p class="text-xs text-slate-500">{{ __('trello.last_sync') }}: {{ App\Support\DateFormat::format($connection->last_synced_at) }}</p>
-                @if($connection->last_error)<p class="mt-2 text-sm text-rose-600">{{ $connection->last_error }}</p>@endif
+                <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('trello.status') }}: {{ $connection->status->value }} · {{ __('trello.mode') }}: {{ $connection->mode->value }} · {{ __('trello.token') }}: ••••{{ $connection->lastFour() }}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('trello.last_sync') }}: {{ App\Support\DateFormat::format($connection->last_synced_at) }}</p>
+                @if($connection->last_error)<p class="mt-2 text-sm text-rose-600 dark:text-rose-400">{{ $connection->last_error }}</p>@endif
             </div>
             <div class="flex flex-wrap gap-2">
                 @if($connection->status->value === 'paused')
@@ -46,14 +46,14 @@
         <form method="POST" action="{{ route('trello.disconnect', $connection) }}" class="mt-4" onsubmit="return confirm('{{ __('trello.disconnect_confirm') }}')">
             @csrf @method('DELETE')
             <label class="flex items-center gap-2 text-xs"><input type="checkbox" name="forget_links" value="1"> {{ __('trello.forget_links') }}</label>
-            <button class="btn btn-ghost text-rose-600" type="submit">{{ __('trello.disconnect') }}</button>
+            <button class="btn btn-ghost text-rose-600 dark:text-rose-400" type="submit">{{ __('trello.disconnect') }}</button>
         </form>
     </div>
 
     <div class="card mt-6">
         <h2 class="mb-3 font-semibold">{{ __('trello.imports') }}</h2>
         <ul class="text-sm">@foreach($imports as $run)
-            <li><a class="text-brand-600 underline" href="{{ route('trello.import.report', $run) }}">#{{ $run->id }} — {{ $run->status }}</a> · {{ App\Support\DateFormat::format($run->finished_at) }}</li>
+            <li><a class="text-brand-600 dark:text-brand-400 underline" href="{{ route('trello.import.report', $run) }}">#{{ $run->id }} — {{ $run->status }}</a> · {{ App\Support\DateFormat::format($run->finished_at) }}</li>
         @endforeach</ul>
     </div>
 

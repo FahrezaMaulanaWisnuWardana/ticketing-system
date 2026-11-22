@@ -17,7 +17,7 @@ final class NotifyRequestWhenDevDone implements ShouldQueue
 {
     public function handle(TicketStatusChanged $event): void
     {
-        if ($event->newStatus !== TicketStatus::Done->value) {
+        if (TicketStatus::tryFrom($event->newStatus)?->group() !== TicketStatus::Done) {
             return;
         }
         $dev = Ticket::withoutGlobalScopes()->find($event->ticketId);

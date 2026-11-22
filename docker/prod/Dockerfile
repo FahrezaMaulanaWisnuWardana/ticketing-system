@@ -2,7 +2,7 @@
 FROM php:8.3-fpm-alpine AS base
 
 RUN apk add --no-cache \
-        bash su-exec curl git unzip postgresql-client icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev \
+        bash su-exec curl git unzip postgresql-client postgresql-dev icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev \
         $PHPIZE_DEPS \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" pdo_pgsql intl gd zip bcmath opcache pcntl \

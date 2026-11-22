@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: ${DB_DATABASE:-ticketing}
       POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -16,7 +16,8 @@ services:
     init: true
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      # Host has its own PostgreSQL on 5432, so expose Docker Postgres on 5433.
+      - "5433:5432"
     deploy:
       resources:
         limits:
@@ -52,6 +53,9 @@ services:
       REDIS_HOST: redis
       MAIL_HOST: mailpit
       BROADCAST_CONNECTION: reverb
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - .:/var/www
       - ./docker/dev/php.ini:/usr/local/etc/php/conf.d/99-ticketing.ini:ro
@@ -109,6 +113,9 @@ services:
       DB_HOST: postgres
       REDIS_HOST: redis
       SKIP_MIGRATE: "1"
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - .:/var/www
     depends_on:
@@ -139,6 +146,9 @@ services:
       DB_HOST: postgres
       REDIS_HOST: redis
       SKIP_MIGRATE: "1"
+      REVERB_HOST: reverb
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
     volumes:
       - .:/var/www
     depends_on:
